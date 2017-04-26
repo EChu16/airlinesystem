@@ -3,11 +3,11 @@ DB Final Proj
 
 # Github commands
 
-* `git add __file__`
+* 1. `git add __file__`
 
-* `git commit -m "message"`
+* 2. `git commit -m "message"`
 
-* `git push`
+* 3. `git push`
 
 * `git status`
 
@@ -20,3 +20,11 @@ DB Final Proj
 * `git rebase -i master`
 
 * `git push -f origin __branchname__`
+
+* `git pull`
+
+* `git merge --ff-only __branchname__`
+
+For k: `/Application/MAMP/htdocs/`
+
+`~/Documents/airlinesystem`
