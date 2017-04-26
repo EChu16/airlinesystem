@@ -212,4 +212,66 @@ INSERT INTO booking_agent
 VALUES ("must74@gmail.com", "frdeswaq4", 3048);
 
 -- to do : customer and after
+INSERT INTO customer
+VALUES ("customer1@gmail.com", "Kobe Bryant", "nba24", "54", "Ball Street", "Los Angeles", "California", 2129280394, "KB203", STR_TO_DATE("12/16/2020", "%m/%d/%y"), "USA", STR_TO_DATE("12/16/1970", "%m/%d/%y");
+
+INSERT INTO customer
+VALUES ("customer2@gmail.com", "Michael Jordan", "nba23", "45", "Jordan Street", "Chicago", "Illinois", 6469342820, "MJ233", STR_TO_DATE("01/02/2021", "%m/%d/%y"), "USA", STR_TO_DATE("01/02/1971", "%m/%d/%y");
+
+INSERT INTO customer
+VALUES ("customer3@gmail.com", "Dwight Howard", "nba12", "123", "Clown Street", "Orlando", "Florida", 2140290393, "DH003", STR_TO_DATE("12/12/2015", "%m/%d/%y"), "China", STR_TO_DATE("12/12/1965", "%m/%d/%y");
+
+INSERT INTO customer
+VALUES ("customer4@gmail.com", "Ray Allen", "nba20", "2", "Sharp Street", "Boston", "Massachusetts", 1029382932, "RA283", STR_TO_DATE("05/05/2018", "%m/%d/%y"), "Brazil", STR_TO_DATE("05/05/1968", "%m/%d/%y");
+
+INSERT INTO customer
+VALUES ("customer5@gmail.com", "Sharkeisha", "sharkYY", "666", "Shark Street", "Water", "River", 1293837764, "S2203", STR_TO_DATE("06/23/2019", "%m/%d/%y"), "USA", STR_TO_DATE("06/23/1969", "%m/%d/%y");
+
+INSERT INTO flight
+VALUES ("Chimney", 4504, "JFK", NOW(), "BRZ", 300, ,"Updated", 1029382);
+
+INSERT INTO flight
+VALUES ("Tandon", 4203, "JFK", NOW(), "LAX", 450, ,"Delayed", 108273);
+
+INSERT INTO flight
+VALUES ("Fruit", 4182, "LAX", NOW(), "CHI", 350, ,"Updated", 114843);
+
+INSERT INTO flight
+VALUES ("Sky", 4392, "DIA", NOW(), "CHI", 327, ,"In-Progress", 191827);
+
+INSERT INTO flight
+VALUES ("Flame", 4382, "BRZ", NOW(), "DIA", 810, ,"In-Progress", 147574);
+
+INSERT INTO ticket
+VALUES (193492884, "Chimney", 4504);
+
+INSERT INTO ticket
+VALUES (129384739, "Tandon", 4203);
+
+INSERT INTO ticket
+VALUES (128328437, "Sky", 4392);
+
+INSERT INTO ticket
+VALUES (147543885, "Flame", 4382);
+
+INSERT INTO ticket
+VALUES (198342774, "Fruit", 4182);
+
+INSERT INTO purchases
+VALUES (193492884, "customer1@gmail.com", "must74@gmail.com", STR_TO_DATE("04/26/2017", "%m/%d/%y"));
+
+INSERT INTO purchases
+VALUES (129384739, "customer2@gmail.com", "rdms84@gmail.com", STR_TO_DATE("05/22/2017", "%m/%d/%y"));
+
+INSERT INTO purchases
+VALUES (128328437, "customer3@gmail.com", "atown30@gmail.com", STR_TO_DATE("06/05/2016", "%m/%d/%y"));
+
+INSERT INTO purchases
+VALUES (147543885, "customer4@gmail.com", "bmod82@gmail.com", STR_TO_DATE("11/10/2018", "%m/%d/%y"));
+
+INSERT INTO purchases
+VALUES (198342774, "customer5@gmail.com", "jman45@gmail.com", STR_TO_DATE("04/30/2017", "%m/%d/%y"));
+
+
+
 
