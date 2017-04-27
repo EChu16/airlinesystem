@@ -1,4 +1,4 @@
-<?php include('lib/airline_system.php'); ?>
+<?php include('lib/AirlineSystem.php'); ?>
 <!DOCTYPE html>
 <html lang="en">
   <?php

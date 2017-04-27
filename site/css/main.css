@@ -1,4 +1,57 @@
 /***** Custom styling *****/
+input {
+  color: black;
+}
 .full-height {
   height: 100%;
+}
+.body-center {
+  text-align: center;
+}
+.sunset-bg {
+  background-image: url('../images/sunset-bg.jpg');
+  background-size: 100% 100%;
+}
+.form-wrapper {
+  padding-top: 200px;
+}
+.login-form, .signup-form {
+  width: 400px;
+  display: inline-block;
+}
+.label {
+  font-family: Calibri, Geneva, sans-serif;
+  font-size: 12pt;
+  display: inline-block;
+  float: left;
+  width: 150px;
+}
+.form-field {
+  font-family: Calibri, Geneva, sans-serif;
+  font-size: 12pt;
+  display: inline-block;
+  width: 250px;
+}
+.vertical-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.field-padding {
+  padding-top: 20px;
+}
+#submit-btn {
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+#error-msg {
+  color: red;
+}
+.radio-padding {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+.white-text { 
+  color: white;
+  padding-left: 5px;
 }

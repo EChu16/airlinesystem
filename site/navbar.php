@@ -10,11 +10,10 @@
     </div>
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <div class="nav navbar-nav navbar-left" style="margin-top:13px;"> Blackberry Airlines</div>
+      <a href="index.php">
+        <div class="nav navbar-nav navbar-left" style="margin-top:13px;"> Blackberry Airlines</div>
+      </a>
       <ul class="nav navbar-nav navbar-right">
-        <li>
-        <a class="page-scroll" href="index.php">Home</a>
-        </li>
         <li>
         <a class="page-scroll" href="flights.php">Flights</a>
         </li>

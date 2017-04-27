@@ -15,7 +15,8 @@
           <div class="carousel-caption">
             <h2 data-animation="animated bounceInDown">
             Blackberry Airlines  </h2>
-            <a href="#" class="btn btn-ghost btn-lg" data-animation="animated fadeInLeft">Log In</a><a href="#" class="btn btn-ghost btn-lg" data-animation="animated fadeInRight">Sign Up</a>
+            <a href="login.php" class="btn btn-ghost btn-lg" data-animation="animated fadeInLeft">Log In</a>
+            <a href="signup.php" class="btn btn-ghost btn-lg" data-animation="animated fadeInRight">Sign Up</a>
           </div>
         </div>
       <!-- /.carousel-inner -->
