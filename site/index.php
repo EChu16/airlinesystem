@@ -3,7 +3,7 @@
 <html lang="en">
   <?php include('header.php'); ?>
   <body id="page-top">
-    <?php include('navbar.php'); ?>
+    <?php include('public-navbar.php'); ?>
 
     <!-- Section Intro Slider
     ================================================== -->

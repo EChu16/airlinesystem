@@ -154,9 +154,9 @@
         return $.trim(email).match(pattern) ? true : false;
       }
 
-      function validateDate() {
+      function validateDate(date) {
         var dateRegEx = /^(0[1-9]|1[012]|[1-9])[- /.](0[1-9]|[12][0-9]|3[01]|[1-9])[- /.](19|20)\d\d$/
-        return ($(dateselector).match !== null);
+        return (date.match(dateRegEx) !== null);
       }
       $('input[name=account_type]').change(function (){
         changeForm();
@@ -174,7 +174,7 @@
             sendRequest = false;
           }
           var trimmed_lname = $.trim($('input[name=lastname').val());
-          if(trimmed.lname == "") {
+          if(trimmed_lname == "") {
             $(error).html('Last name can\'t be blank.');
           }
           var trimmed_pw = $.trim($('input[name=password]').val());
@@ -221,7 +221,7 @@
             sendRequest = false;
           }
           var trimmed_phonenum = $.trim($('input[name=phonenum]').val());
-          if(trimmed_phonenum == "") {
+          if(trimmed_phonenum == "" && !$('input[name=phonenum]').is(":visible")) {
             $(error).html('Phone number can\'t be blank.');
             sendRequest = false;
           }
@@ -281,7 +281,7 @@
         }
 
         //Validate phone number
-        if(5 >= $('input[name=phonenum]').length >= 11) {
+        if(5 >= $('input[name=phonenum]').length <= 11 && $('input[name=phonenum]').is(":visible")) {
           $(error).html('Phone number must be 5-11 digits.');
         }
 
