@@ -95,12 +95,57 @@
     <script type="text/javascript">
       function changeForm() {
         $account_type = $('input[name=account_type]:checked').val();
-        if($account_type == "customer" || $account_type == "booking_agent") {
+        if($account_type == "customer") {
           $('#user-field').hide();
           $('#email-field').show();
-        } else if($account_type == "airline_staff"){
+          $('#firstname-field').show();
+          $('#lastname-field').show();
+          $('#password-field').show();
+          $('#buildingnum-field').show();
+          $('#street-field').show();
+          $('#city-field').show();
+          $('#state-field').show();
+          $('#phonenum-field').show();
+          $('#passportnum-field').show();
+          $('#passportexp-field').show();
+          $('#passport_country-field').show();
+          $('#dob-field').show();
+          $('#airlinename-field').hide();
+          $('#ba_id-field').hide();
+        } else if($account_type == "airline_staff") {
           $('#user-field').show();
           $('#email-field').hide();
+          $('#firstname-field').show();
+          $('#lastname-field').show();
+          $('#password-field').show();
+          $('#buildingnum-field').hide();
+          $('#street-field').hide();
+          $('#city-field').hide();
+          $('#state-field').hide();
+          $('#phonenum-field').hide();
+          $('#passportnum-field').hide();
+          $('#passportexp-field').hide();
+          $('#passport_country-field').hide();
+          $('#dob-field').show();
+          $('#airlinename-field').show();
+          $('#ba_id-field').hide();
+        } else if($account_type == "booking_agent") {
+          $('#user-field').hide();
+          $('#email-field').show();
+          $('#firstname-field').show();
+          $('#lastname-field').show();
+          $('#password-field').show();
+          $('#buildingnum-field').hide();
+          $('#street-field').hide();
+          $('#city-field').hide();
+          $('#state-field').hide();
+          $('#phonenum-field').hide();
+          $('#passportnum-field').hide();
+          $('#passportexp-field').hide();
+          $('#passport_country-field').hide();
+          $('#dob-field').hide();
+          $('#airlinename-field').hide();
+          $('#ba_id-field').show();
         }
       }
 
@@ -109,6 +154,10 @@
         return $.trim(email).match(pattern) ? true : false;
       }
 
+      function validateDate() {
+        var dateRegEx = /^(0[1-9]|1[012]|[1-9])[- /.](0[1-9]|[12][0-9]|3[01]|[1-9])[- /.](19|20)\d\d$/
+        return ($(dateselector).match !== null);
+      }
       $('input[name=account_type]').change(function (){
         changeForm();
       });
@@ -117,37 +166,123 @@
         var sendRequest = true;
         var error = $('#error-msg');
         $account_type = $('input[name=account_type]:checked').val();
-        if($account_type == "customer" || $account_type == "booking_agent") {
+
+        if($account_type == "customer" || $account_type == "booking_agent" || $account_type == "airline_staff") {
+          var trimmed_fname = $.trim($('input[name=firstname]').val());
+          if(trimmed_fname == "") {
+            $(error).html('First name can\'t be blank.');
+            sendRequest = false;
+          }
+          var trimmed_lname = $.trim($('input[name=lastname').val());
+          if(trimmed.lname == "") {
+            $(error).html('Last name can\'t be blank.');
+          }
+          var trimmed_pw = $.trim($('input[name=password]').val());
+          if(trimmed_pw == "") {
+            $(error).html('Password can\'t be blank.');
+            sendRequest = false;
+          }
+        }
+
+        else if ($account_type == "customer" || $account_type == "booking_agent") {
           var trimmed_email = $.trim($('input[name=email]').val());
           if(trimmed_email == "") {
-            $(error).html('Email can\'t be blank');
-            sendRequest = false;
-          }
-        } else if($account_type == "airline_staff"){
-          var trimmed_username = $.trim($('input[name=username]').val());
-          if(trimmed_username == "") {
-            $(error).html('Username can\'t be blank');
+            $(error).html('Email can\'t be blank.');
             sendRequest = false;
           }
         }
-        var trimmed_fname = $.trim($('input[name=firstname]').val());
-        if(trimmed_fname == "") {
-          $(error).html('Name can\'t be blank');
-          sendRequest = false;
+
+        else if($account_type == "customer" || $account_type == "airline_staff") {
+          var trimmed_dob = $.trim($('input[name=dob]').val());
+          if(trimmed_dob == "") {
+            $(error).html('Date of birth can\'t be blank.');
+          }
         }
 
-        var trimmed_pw = $.trim($('input[name=password]').val());
-        if(trimmed_pw == "") {
-          $(error).html('Password can\'t be blank');
-          sendRequest = false;
+        else if($account_type == "customer") {
+          var trimmed_buildingnum = $.trim($('input[name=buildingnum]').val());
+          if(trimmed_buildingnum == "") {
+            $(error).html('Building number can\'t be blank.');
+            sendRequest = false;
+          }
+          var trimmed_street = $.trim($('input[name=street]').val());
+          if(trimmed_street == "") {
+            $(error).html('Street can\'t be blank.');
+            sendRequest = false;
+          }
+          var trimmed_city = $.trim($('input[name=city]').val());
+          if(trimmed_city == "") {
+            $(error).html('City can\'t be blank.');
+            sendRequest = false;
+          }
+          var trimmed_state = $.trim($('input[name=state]').val());
+          if(trimmed_state == "") {
+            $(error).html('State can\'t be blank.');
+            sendRequest = false;
+          }
+          var trimmed_phonenum = $.trim($('input[name=phonenum]').val());
+          if(trimmed_phonenum == "") {
+            $(error).html('Phone number can\'t be blank.');
+            sendRequest = false;
+          }
+          var trimmed_passportnum = $.trim($('input[name=passportnum]').val());
+          if(trimmed_passportnum == "") {
+            $(error).html('Passport number can\'t be blank.');
+            sendRequest = false;
+          }
+          var trimmed_passportexp = $.trim($('input[name=passportexp]').val());
+          if(trimmed_passportexp == "") {
+            $(error).html('Passport expiration can\'t be blank.');
+            sendRequest = false;
+          }
+          var trimmed_passportcountry = $.trim($('input[name=passport_country]').val());
+          if(trimmed_passportcountry == "") {
+            $(error).html('Passport country can\'t be blank.');
+            sendRequest = false;
+          }
+        } 
+
+        else if($account_type == "airline_staff"){
+          var trimmed_airlinename = $.trim($('input[name=airlinename]').val());
+          if(trimmed_airlinename == "") {
+            $(error).html('Airline name can\'t be blank.');
+            sendRequest = false;
+          }
+        }
+        else if($account_type == "booking_agent") {
+          var trimmed_id = $.trim($('input[name=ba_id]').val());
+          if(trimmed_id == "") {
+            $(error).html("Booking agent ID can\'t be blank.");
+          }
         }
 
-        // Validate email
+        //Validate email
         if($('input[name=email]').is(":visible")) {
           if(!validateEmail($('input[name=email]').val())) {
-            $(error).html('Please enter a valid email');
+            $(error).html('Please enter a valid email.');
             sendRequest = false;
           }
+        }
+
+        //Validate date of birth
+        if($('input[name=dob]').is(":visible")) {
+          if(!validateDate($('input[name=dob]').val())) {
+            $(error).html('Invalid date of birth format. mm/dd/yyyy');
+            sendRequest = false;
+          }
+        }
+
+        //Validate passport expiration
+        if($('input[name=passportexp').is(":visible")) {
+          if(!validateDate($('input[name=passportexp]').val())) {
+            $(error).html('Invalid passport expiration format. mm/dd/yyyy');
+            sendRequest = false;
+          }
+        }
+
+        //Validate phone number
+        if(5 >= $('input[name=phonenum]').length >= 11) {
+          $(error).html('Phone number must be 5-11 digits.');
         }
 
         if (sendRequest) {
