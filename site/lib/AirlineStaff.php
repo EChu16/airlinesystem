@@ -38,8 +38,7 @@
         mysqli_real_escape_string($this->link, $this->username),
         mysqli_real_escape_string($this->link, $this->password));
       $result = mysqli_query($this->link, $query);
-      if (!$result) {
-        error_log("Invalid user credentials");
+      if (!$result || mysqli_num_rows($result) === 0) {
         return false;
       }
 

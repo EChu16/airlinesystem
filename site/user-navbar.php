@@ -23,6 +23,9 @@
         <li>
         <a class="page-scroll" href="signup.php">Account</a>
         </li>
+        <li>
+        <a id="logout" class="page-scroll" href="signup.php">Logout</a>
+        </li>
       </ul>
     </div>
     <!-- /.navbar-collapse -->

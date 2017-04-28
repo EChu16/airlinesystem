@@ -36,7 +36,7 @@
         mysqli_real_escape_string($this->link, $this->email),
         mysqli_real_escape_string($this->link, $this->password));
       $result = mysqli_query($this->link, $query);
-      if (!$result) {
+      if (!$result || mysqli_num_rows($result) === 0) {
         error_log("Invalid user credentials");
         return false;
       }
@@ -46,8 +46,7 @@
       $this->is_valid_user = true;
       $this->first_name = $row['first_name'];
       $this->last_name = $row['last_name'];
-
-    } // end __construct
+    }
         
     function __destruct() {
       // Close DB connection

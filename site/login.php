@@ -65,16 +65,19 @@
             var trimmed_email = $.trim($('input[name=email]').val());
             if(trimmed_email == "") {
               $(error).html('Email can\'t be blank');
+              sendRequest = false;
             }
           } else if($account_type == "airline_staff"){
             var trimmed_username = $.trim($('input[name=username]').val());
             if(trimmed_username == "") {
               $(error).html('Username can\'t be blank');
+              sendRequest = false;
             }
           }
           var trimmed_pw = $.trim($('input[name=password]').val());
           if(trimmed_pw == "") {
             $(error).html('Password can\'t be blank');
+            sendRequest = false;
           }
           if (sendRequest) {
             var url = "authentication.php";

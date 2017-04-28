@@ -8,7 +8,7 @@
   $username = (isset($_POST['username'])) ? $_POST['username'] : "";
   $email = (isset($_POST['email'])) ? $_POST['email'] : "";
   $booking_agent_id = (isset($_POST['ba_id'])) ? (int)$_POST['ba_id'] : "";
-  $password = (isset($_POST['password'])) ? md5($_POST['password']) : "";
+  $password = (isset($_POST['password'])) ? ($_POST['password']) : "";
   $firstname = (isset($_POST['firstname'])) ? $_POST['firstname'] : "";
   $lastname = (isset($_POST['lastname'])) ? $_POST['lastname'] : "";
   $buildingnum = (isset($_POST['buildingnum'])) ? $_POST['buildingnum'] : "";
