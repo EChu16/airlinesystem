@@ -2,7 +2,7 @@
 <html lang="en">
   <?php include('header.php'); ?>
   <body id="page-top">
-    <?php include('navbar.php'); ?>
+    <?php include('public-navbar.php'); ?>
       <div class="full-height body-center sunset-bg">
         <div class="form-wrapper">
           <div class="login-form">
@@ -52,43 +52,46 @@
         }
       }
 
-      $('input[name=account_type]').change(function (){
+      $(document).ready(function() {
+        $('input[name=account_type]').change(function (){
+          changeForm();
+        });
+
+        $('#submit-btn').click(function() {
+          var sendRequest = true;
+          var error = $('#error-msg');
+          $account_type = $('input[name=account_type]:checked').val();
+          if($account_type == "customer" || $account_type == "booking_agent") {
+            var trimmed_email = $.trim($('input[name=email]').val());
+            if(trimmed_email == "") {
+              $(error).html('Email can\'t be blank');
+            }
+          } else if($account_type == "airline_staff"){
+            var trimmed_username = $.trim($('input[name=username]').val());
+            if(trimmed_username == "") {
+              $(error).html('Username can\'t be blank');
+            }
+          }
+          var trimmed_pw = $.trim($('input[name=password]').val());
+          if(trimmed_pw == "") {
+            $(error).html('Password can\'t be blank');
+          }
+          if (sendRequest) {
+            var url = "authentication.php";
+            $.ajax({
+              type: "POST",
+              url: url,
+              data: $("#loginForm").serialize(),
+            }).done(function(data, textStatus, xhr) {
+              window.location.replace("home.php");
+            }).fail(function(xhr, status, error) {
+              $('#error-msg').html(xhr.responseText);
+            });
+          }
+        });
+
         changeForm();
       });
-
-      $('#submit-btn').click(function() {
-        $account_type = $('input[name=account_type]:checked').val();
-        var error = $('#error-msg');
-        if($account_type == "customer" || $account_type == "booking_agent") {
-          var trimmed_email = $.trim($('input[name=email]').val());
-          if(trimmed_email == "") {
-            $(error).html('Email can\'t be blank');
-          }
-        } else if($account_type == "airline_staff"){
-          var trimmed_username = $.trim($('input[name=username]').val());
-          if(trimmed_username == "") {
-            $(error).html('Username can\'t be blank');
-          }
-        }
-        var trimmed_pw = $.trim($('input[name=password]').val());
-        if(trimmed_pw == "") {
-          $(error).html('Password can\'t be blank');
-        }
-        if (sendRequest) {
-          var url = "initial_processing.php";
-          $.ajax({
-            type: "POST",
-            url: url,
-            data: $("#loginForm").serialize(),
-          }).done(function(data) {
-            window.location('home.php');
-          }).fail(function(data) {
-            $(error).html(data);
-          });
-        }
-      });
-
-      changeForm();
     </script>
   </body>
 </html>

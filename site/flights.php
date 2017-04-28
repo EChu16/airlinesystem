@@ -11,7 +11,7 @@
   ?>
   <?php include('header.php'); ?>
   <body id="page-top">
-    <?php include('navbar.php'); ?>
+    <?php include('public-navbar.php'); ?>
       <div class="full-height">
 
       </div>

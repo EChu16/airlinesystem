@@ -3,7 +3,8 @@
     'cookie_lifetime' => 86400,
   ]);
 
-  $_SESSION['username'];
+  $_SESSION['IDENTIFIER'];
+  $_SESSION['ACCOUNT_TYPE'];
   
   //Retrieve IP Address
   if($_SERVER['REMOTE_ADDR'])

@@ -7,23 +7,46 @@
     private $db_name = 'airline_system';
 
     // set connection for object
-    private $conn = null;
-    public $is_valid_user = false;
     public $link = false;
-    
+    public $is_valid_user = false;
+
+    public $email = false;
+    public $password = false;
+    public $first_name = false;
+    public $last_name = false;
+    public $id = false;
+
     public function get($var) {
       return $this->$var;
     }
     
     // Declare a public constructor
-    public function __construct() { 
-      $link = mysqli_connect($this->servername, $this->db_username, $this->db_password, $this->db_name);
+    public function __construct($email, $password) {
+      $this->email = $email;
+      $this->password = md5($password);
+
+      $this->link = mysqli_connect($this->servername, $this->db_username, $this->db_password, $this->db_name);
       // Check connection
       if (mysqli_connect_errno()) {
-        echo "Failed to connect to MySQL: " . mysqli_connect_error();
-      } else {
-        $this->is_valid_system = true;
+        error_log("Failed to connect to MySQL: " . mysqli_connect_error());
+        return false;
       }
+
+      $query = sprintf("SELECT * FROM booking_agent WHERE email = '%s' AND password = '%s'",
+        mysqli_real_escape_string($this->link, $this->email),
+        mysqli_real_escape_string($this->link, $this->password));
+      $result = mysqli_query($this->link, $query);
+      if (!$result) {
+        error_log("Invalid user credentials");
+        return false;
+      }
+
+      $row = mysqli_fetch_assoc($result);
+
+      $this->is_valid_user = true;
+      $this->first_name = $row['first_name'];
+      $this->last_name = $row['last_name'];
+
     } // end __construct
         
     function __destruct() {

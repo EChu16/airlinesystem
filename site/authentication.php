@@ -8,7 +8,7 @@
   $username = (isset($_POST['username'])) ? $_POST['username'] : "";
   $email = (isset($_POST['email'])) ? $_POST['email'] : "";
   $booking_agent_id = (isset($_POST['ba_id'])) ? (int)$_POST['ba_id'] : "";
-  $password = (isset($_POST['password'])) ? $_POST['password'] : "";
+  $password = (isset($_POST['password'])) ? md5($_POST['password']) : "";
   $firstname = (isset($_POST['firstname'])) ? $_POST['firstname'] : "";
   $lastname = (isset($_POST['lastname'])) ? $_POST['lastname'] : "";
   $buildingnum = (isset($_POST['buildingnum'])) ? $_POST['buildingnum'] : "";
@@ -25,13 +25,17 @@
   $airlinename = (isset($_POST['airlinename'])) ? $_POST['airlinename'] : "";
   $type = (isset($_POST['account_type'])) ? $_POST['account_type'] : "";
 
+  $error = "";
+
   if($action == "signup") {
     $link = mysqli_connect($servername, $db_username, $db_password, $db_name);
 
     // Check connection
     if (mysqli_connect_errno()) {
-      echo "Failed to connect to MySQL: " . mysqli_connect_error();
-      return false;
+      error_log('Failed to connect to MySQL: ' . mysqli_connect_error());
+      $data = array('status' => 500, 'message' => 'Failed to connect to MySQL: ' . mysqli_connect_error());
+      echo json_encode($data);
+      exit;
     }
     $query = "";
 
@@ -67,34 +71,50 @@
     $result = mysqli_query($link, $query);
     if (!$result) {
       error_log('Could not run query: ' . mysqli_error($link));
-      echo 'Could not run query: ' . mysqli_error($link);
+      http_response_code(500);
+      echo 'Invalid field data';
       return false;
     } else {
-      return true;
+      http_response_code(200);
+      $data = array('status' => 200, 'message' => 'Successfully registered');
+      echo json_encode($data);
     }
 
   } else if ($action == "login") {
     if($type == "customer") {
       include('lib/Customer.php');
       $customer = new Customer($email, $password);
-      if($customer->is_valid_user) {
-        return true;
+      if(!$customer->is_valid_user) {
+        $error = 'Invalid user credentials';
       }
     }
     else if($type == "booking_agent") {
       include('lib/BookingAgent.php');
       $booking_agent = new BookingAgent($email, $password);
-      if($booking_agent->is_valid_user) {
-        return true;
+      if(!$booking_agent->is_valid_user) {
+        $error = 'Invalid user credentials';
       }
     }
     else if($type == "airline_staff") {
       include('lib/AirlineStaff.php');
-      $airline_staff = new AirlineStaff($email, $password);
-      if($airline_staff->is_valid_user) {
-        return true;
+      $airline_staff = new AirlineStaff($username, $password);
+      if(!$airline_staff->is_valid_user) {
+        $error = 'Invalid user credentials';
       }
+    }
+
+    if($error != "") {
+      http_response_code(500);
+      error_log($error);
+      echo($error);
+      return false;
+    } else {
+      http_response_code(200);
+      echo 'Successfully logged in';
+      include('lib/session_mgr.php');
+      $_SESSION['ACCOUNT_TYPE'] = $type;
+      $_SESSION['IDENTIFIER'] = ($type == "airline_staff") ? $username : $email;
     }
   }
 
-?>)
+?>

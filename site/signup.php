@@ -2,7 +2,7 @@
 <html lang="en">
   <?php include('header.php'); ?>
   <body id="page-top">
-    <?php include('navbar.php'); ?>
+    <?php include('public-navbar.php'); ?>
       <div class="body-center sunset-bg">
         <div class="form-wrapper">
           <div class="signup-form">
@@ -286,14 +286,15 @@
         }
 
         if (sendRequest) {
-          var url = "initial_processing.php";
+          var url = "authentication.php";
           $.ajax({
             type: "POST",
             url: url,
             data: $("#signupForm").serialize(),
-            success: function(data) {
-              window.location('home.php');
-            }
+          }).done(function(data) {
+            window.location.replace("home.php");
+          }).fail(function(xhr, status, error) {
+            $('#error-msg').html(xhr.responseText);
           });
         }
       });
