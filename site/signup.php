@@ -24,6 +24,10 @@
                 <span class="label"> Username: </span>
                 <span class="form-field"><input type="text" name="username"/></span>
               </div>
+              <div id="ba_id-field" class="vertical-center field-padding">
+                <span class="label"> ID: </span>
+                <span class="form-field"><input type="text" name="ba_id"/></span>
+              </div>
               <div id="password-field" class="vertical-center field-padding">
                 <span class="label">Password: </span>
                 <span class="form-field"><input type="password" name="password"/></span>
@@ -139,9 +143,11 @@
         }
 
         // Validate email
-        if(!validateEmail($('input[name=email]').val())) {
-          $(error).html('Please enter a valid email');
-          sendRequest = false;
+        if($('input[name=email]').is(":visible")) {
+          if(!validateEmail($('input[name=email]').val())) {
+            $(error).html('Please enter a valid email');
+            sendRequest = false;
+          }
         }
 
         if (sendRequest) {

@@ -5,9 +5,9 @@
   $db_name = 'airline_system';
 
   $action = (isset($_POST['action'])) ? $_POST['action'] : "";
-  error_log($_POST['action']);
   $username = (isset($_POST['username'])) ? $_POST['username'] : "";
   $email = (isset($_POST['email'])) ? $_POST['email'] : "";
+  $booking_agent_id = (isset($_POST['ba_id'])) ? (int)$_POST['ba_id'] : "";
   $password = (isset($_POST['password'])) ? $_POST['password'] : "";
   $firstname = (isset($_POST['firstname'])) ? $_POST['firstname'] : "";
   $lastname = (isset($_POST['lastname'])) ? $_POST['lastname'] : "";
@@ -48,17 +48,25 @@
         mysqli_real_escape_string($link, $phonenum),
         mysqli_real_escape_string($link, $passportnum),
         mysqli_real_escape_string($link, $passport_country));
-    } /*else if($type == "booking_agent") {
-      $query = sprintf("INSERT INTO booking_agent (email, first_name, last_name, password) VALUES ('%s', '%s', '%s', '%s')",
-        mysqli_real_escape_string($email, $firstname, $lastname, $password));
-
+    } else if($type == "booking_agent") {
+      $query = sprintf("INSERT INTO booking_agent VALUES ('%s', '%s', '%s', '%s', '%d')",
+        mysqli_real_escape_string($link, $email),
+        mysqli_real_escape_string($link, $password),
+        mysqli_real_escape_string($link, $firstname),
+        mysqli_real_escape_string($link, $lastname),
+        mysqli_real_escape_string($link, $booking_agent_id));
     } else if($type == "airline_staff") {
-      $query = sprintf("INSERT INTO airline_staff (username, first_name, last_name, password) VALUES ('%s', '%s', '%s', '%s')",
-        mysqli_real_escape_string($username, $firstname, $lastname, $password));
-    }*/
+      $query = sprintf("INSERT INTO airline_staff VALUES ('%s', '%s', '%s', '%s','$dob', '%s')",
+        mysqli_real_escape_string($link, $username),
+        mysqli_real_escape_string($link, $password),
+        mysqli_real_escape_string($link, $firstname),
+        mysqli_real_escape_string($link, $lastname),
+        mysqli_real_escape_string($link, $airlinename));
+    }
 
     $result = mysqli_query($link, $query);
     if (!$result) {
+      error_log('Could not run query: ' . mysqli_error($link));
       echo 'Could not run query: ' . mysqli_error($link);
       return false;
     } else {
