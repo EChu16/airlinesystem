@@ -6,7 +6,14 @@
     <?php if(isset($_SESSION)) { ?>
     <?php include('user-navbar.php'); ?>
       <div class="full-height">
-
+        <?php if($_SESSION['ACCOUNT_TYPE'] == "customer") {
+          include('main/customer-home.php');
+        } else if ($_SESSION['ACCOUNT_TYPE'] == "booking_agent") {
+          include('main/booking_agent-home.php');
+        } else if ($_SESSION['ACCOUNT_TYPE'] == "airline_staff") {
+          include('main/airline_staff-home.php');
+        }
+        ?>
       </div>
     <?php } else { ?>
     <?php include('public-navbar.php'); ?>

@@ -281,8 +281,9 @@
         }
 
         //Validate phone number
-        if((5 > $('input[name=phonenum]').length || $('input[name=phonenum]').length > 11) && $('input[name=phonenum]').is(":visible")) {
+        if((5 > $('input[name=phonenum]').val().length || $('input[name=phonenum]').val().length > 11) && $('input[name=phonenum]').is(":visible")) {
           $(error).html('Phone number must be 5-11 digits.');
+          sendRequest = false;
         }
 
         if (sendRequest) {

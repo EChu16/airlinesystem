@@ -42,7 +42,7 @@
         return false;
       }
 
-      $query = sprintf("SELECT * FROM customers WHERE email = '%s' AND password = '%s'",
+      $query = sprintf("SELECT * FROM customer WHERE email = '%s' AND password = '%s'",
         mysqli_real_escape_string($this->link, $this->email),
         mysqli_real_escape_string($this->link, $this->password));
       $result = mysqli_query($this->link, $query);

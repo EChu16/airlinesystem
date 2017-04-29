@@ -1,4 +1,5 @@
 <?php 
+  include('lib/session_mgr.php');
   $servername = 'localhost';
   $db_username = 'root';
   $db_password = 'root';
@@ -44,7 +45,7 @@
         mysqli_real_escape_string($link, $email),
         mysqli_real_escape_string($link, $firstname),
         mysqli_real_escape_string($link, $lastname),
-        mysqli_real_escape_string($link, $password),
+        mysqli_real_escape_string($link, md5($password)),
         mysqli_real_escape_string($link, $buildingnum),
         mysqli_real_escape_string($link, $street),
         mysqli_real_escape_string($link, $city),
@@ -55,14 +56,14 @@
     } else if($type == "booking_agent") {
       $query = sprintf("INSERT INTO booking_agent VALUES ('%s', '%s', '%s', '%s', '%d')",
         mysqli_real_escape_string($link, $email),
-        mysqli_real_escape_string($link, $password),
+        mysqli_real_escape_string($link, md5($password)),
         mysqli_real_escape_string($link, $firstname),
         mysqli_real_escape_string($link, $lastname),
         mysqli_real_escape_string($link, $booking_agent_id));
     } else if($type == "airline_staff") {
       $query = sprintf("INSERT INTO airline_staff VALUES ('%s', '%s', '%s', '%s','$dob', '%s')",
         mysqli_real_escape_string($link, $username),
-        mysqli_real_escape_string($link, $password),
+        mysqli_real_escape_string($link, md5($password)),
         mysqli_real_escape_string($link, $firstname),
         mysqli_real_escape_string($link, $lastname),
         mysqli_real_escape_string($link, $airlinename));
@@ -78,6 +79,9 @@
       http_response_code(200);
       $data = array('status' => 200, 'message' => 'Successfully registered');
       echo json_encode($data);
+      $_SESSION['ACCOUNT_TYPE'] = $type;
+      $_SESSION['IDENTIFIER'] = ($type == "airline_staff") ? $username : $email;
+      $_SESSION['PASSWORD'] = md5($password);
     }
 
   } else if ($action == "login") {
@@ -111,9 +115,11 @@
     } else {
       http_response_code(200);
       echo 'Successfully logged in';
-      include('lib/session_mgr.php');
       $_SESSION['ACCOUNT_TYPE'] = $type;
       $_SESSION['IDENTIFIER'] = ($type == "airline_staff") ? $username : $email;
+      $_SESSION['PASSWORD'] = md5($password);
+      echo $_SESSION['ACCOUNT_TYPE'];
+      echo $_SESSION['IDENTIFIER'];
     }
   }
 
