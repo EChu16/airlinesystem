@@ -18,7 +18,7 @@
       </div>
     <?php } else { ?>
     <?php include('public-navbar.php'); ?>
-      <div class="full-height vertical-center">
+      <div id="error-msg" class="full-height vertical-center">
         Please relogin.
       </div>
     <?php } ?>

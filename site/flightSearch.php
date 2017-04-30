@@ -1,5 +1,5 @@
 <?php
-  include('lib/AirlineSystem.php');
+  include('lib/AirlineSystem.php'); include('lib/session_mgr.php');
   $servername = 'localhost';
   $db_username = 'root';
   $db_password = 'root';
@@ -27,20 +27,26 @@
   } else {
     $parsed_result = "";
     foreach($result as $row) {
+      $view_link = "";
+      if(isset($_SESSION['PASSWORD'])) {
+        $view_link = "<td align='center'><a href='view_flight.php?flight_num=".$row['flight_num']."&airline_name=".$row['airline_name']."'>Flight Link</a></td>";
+      }
+      error_log($view_link);
       $parsed_result .= '<tr>'.
-              '<td align="center">'.$row['airline_name'].'</td>'.
-              '<td align="center">'.$row['flight_num'].'</td>'.
-              '<td align="center">'.$row['departure_airport'].'</td>'.
-              '<td align="center">'.$row['departure_city'].'</td>'.
-              '<td align="center">'.$row['departure_date'].'</td>'.
-              '<td align="center">'.$row['departure_time'].'</td>'.
-              '<td align="center">'.$row['arrival_airport'].'</td>'.
-              '<td align="center">'.$row['arrival_city'].'</td>'.
-              '<td align="center">'.$row['arrival_date'].'</td>'.
-              '<td align="center">'.$row['arrival_time'].'</td>'.
-              '<td align="center">'.$row['price'].'</td>'.
-              '<td align="center">'.$row['status'].'</td>'.
-           '<tr>';
+                          $view_link.
+                          '<td align="center">'.$row['airline_name'].'</td>'.
+                          '<td align="center">'.$row['flight_num'].'</td>'.
+                          '<td align="center">'.$row['departure_airport'].'</td>'.
+                          '<td align="center">'.$row['departure_city'].'</td>'.
+                          '<td align="center">'.$row['departure_date'].'</td>'.
+                          '<td align="center">'.$row['departure_time'].'</td>'.
+                          '<td align="center">'.$row['arrival_airport'].'</td>'.
+                          '<td align="center">'.$row['arrival_city'].'</td>'.
+                          '<td align="center">'.$row['arrival_date'].'</td>'.
+                          '<td align="center">'.$row['arrival_time'].'</td>'.
+                          '<td align="center">'.$row['price'].'</td>'.
+                          '<td align="center">'.$row['status'].'</td>'.
+                       '<tr>';
     }
 
     http_response_code(200);

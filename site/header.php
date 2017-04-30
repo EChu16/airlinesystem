@@ -50,6 +50,9 @@
         $("a").attr("href", function(i, oldHref) {
           if(oldHref != "login.php") {
             if (oldHref.charAt(0) != '#') {
+              if(oldHref.indexOf('?') != -1 && oldHref.indexOf('identifer') == -1) {
+                return oldHref + "&identifier="+getUrlParameter("identifier")+"&type="+getUrlParameter("type");
+              }
               return oldHref + "?identifier="+getUrlParameter("identifier")+"&type="+getUrlParameter("type");
             }
           }

@@ -7,26 +7,34 @@
   <table class="customerInterface" border="0" cellpadding="0" cellspacing="0" width="700px" align="center">
     <tr>
       <td align="center">
-        <div id="submit-btn" class="btn btn-primary">
+        <a href="">
+          <div id="submit-btn" class="btn btn-primary">
           View My Flights
           </div>
+        </a>
       </td>
       <td align="center">
-        <div id="submit-btn" class="btn btn-primary">
+        <a href="">
+          <div id="submit-btn" class="btn btn-primary">
           Purchase Tickets
           </div>
+        </a>
       </td>
     </tr>
     <tr>
       <td align="center">
-        <div id="submit-btn" class="btn btn-primary">
+        <a href="flights.php?action=user_search">
+          <div id="submit-btn" class="btn btn-primary">
           Search For Flights
           </div>
+        </a>
       </td>
       <td align="center">
-        <div id="submit-btn" class="btn btn-primary">
+        <a href="">
+          <div id="submit-btn" class="btn btn-primary">
           Logout
           </div>
+        </a>
       </td>
     </tr>
   </table>
@@ -34,7 +42,7 @@
 <?php
   } else {
 ?>
-<div class="interface-position vertical-center">
+<div id="error-msg" class="interface-position vertical-center">
 Invalid user session. Try relogging.
 </div>
 <?php } ?>

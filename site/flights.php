@@ -1,4 +1,4 @@
-<?php include('lib/AirlineSystem.php'); ?>
+<?php include('lib/AirlineSystem.php'); include('lib/session_mgr.php'); ?>
 <!DOCTYPE html>
 <html lang="en">
   <?php
@@ -92,9 +92,12 @@
         </div>
         <div class="interface-right-col full-height">
           <div class="flight-interface">
-            <table id="flight-system" width="1500" border="0" cellpadding="0" cellspacing="0" align="center">
+            <table id="flight-system" width="1500" border="0" cellpadding="0" cellspacing="0" align="center" class="table-striped table-hover">
               <thead>
                 <tr>
+                  <?php if(isset($_SESSION['PASSWORD']) && $_REQUEST['type'] != "airline_staff") {
+                    echo '<th class="body-center">View/Purchase Ticket</th>';
+                  } ?>
                   <th class="body-center">Airline</th>
                   <th class="body-center">Flight #</th>
                   <th class="body-center">Departure airport</th>
@@ -112,7 +115,12 @@
               <tbody>
                 <?php $allFlights = $system->getAllExistingFlights();
                 foreach($allFlights as $row) {
+                  $view_link = "";
+                  if(isset($_SESSION['PASSWORD']) && $_REQUEST['type'] != "airline_staff") {
+                    $view_link = "<td align='center'><a href='view_flight.php?flight_num=".$row['flight_num']."&airline_name=".$row['airline_name']."'>Flight Link</a></td>";
+                  }
                   echo '<tr>'.
+                          $view_link.
                           '<td align="center">'.$row['airline_name'].'</td>'.
                           '<td align="center">'.$row['flight_num'].'</td>'.
                           '<td align="center">'.$row['departure_airport'].'</td>'.
@@ -180,6 +188,7 @@
           }).done(function(data, textStatus, xhr) {
             $('#flight-system tbody').empty();
             $('#flight-system tbody').append(data);
+            loadUserParam();
           }).fail(function(xhr, status, error) {
             $('#error-msg').html(xhr.responseText);
           });

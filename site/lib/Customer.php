@@ -7,9 +7,7 @@
     private $db_name = 'airline_system';
 
     // set connection for object
-    private $conn = null;
     public $link = false;
-
     public $is_valid_user = false;
 
     public $email = false;
@@ -23,8 +21,10 @@
     public $phone_number = false;
     public $passport_number = false;
     public $passport_expiration = false;
+    public $passport_expiration_formatted = false;
     public $passport_country = false;
     public $date_of_birth = false;
+    public $date_of_birth_formatted = false;
     
     public function get($var) {
       return $this->$var;
@@ -56,32 +56,105 @@
       $this->is_valid_user = true;
       $this->first_name = $row['first_name'];
       $this->last_name = $row['last_name'];
-    }
-    function viewMyFlights() {
-    $query = sprintf("SELECT * FROM flight NATURAL JOIN airport NATURAL JOIN purchases")
-      if (!$result || mysqli_num_rows($result) === 0) {
-        error_log('"' . $query. '"' . " returned 0 rows/failed");
-        return false;
-      }
-      return $result
-    }
-    function purchaseTickets() {
-    $query = sprintf("SELECT * FROM ticket NATURAL JOIN flight")
-      if (!$result || mysqli_num_rows($result) === 0) {
-        error_log('"' . $query. '"' . " returned 0 rows/failed");
-        return false;
-      }
-      return $result
+      $this->building_num = $row['building_number'];
+      $this->street = $row['street'];
+      $this->city = $row['city'];
+      $this->state = $row['state'];
+      $this->phone_number = $row['phone_number'];
+      $this->passport_number = $row['passport_number'];
+      $this->passport_expiration = $row['passport_expiration'];
+      $datetime = new DateTime($this->passport_expiration);
+      $this->passport_expiration_formatted = $datetime->format('m/d/Y');
+      $this->passport_country = $row['passport_country'];
+      $this->date_of_birth = $row['date_of_birth'];
+      $datetime = new DateTime($this->date_of_birth);
+      $this->date_of_birth_formatted = $datetime->format('m/d/Y');
     }
 
-    function searchFlights() {
-    $query = sprintf("SELECT * FROM flight NATURAL JOIN")
-      if (!$result || mysqli_num_rows($result) === 0) {
+    function viewMyFlights() {
+      $query = sprintf("SELECT DISTINCT * FROM flight NATURAL JOIN ticket NATURAL JOIN purchases JOIN customer WHERE customer.email = purchases.customer_email AND customer.email='%s'",
+        mysqli_real_escape_string($this->link, $this->email));
+      $result = mysqli_query($this->link, $query);
+      if (!$result) {
         error_log('"' . $query. '"' . " returned 0 rows/failed");
         return false;
       }
-      return $result
+      return $result;
     }
+
+    function decreaseAvailableTickets($flight_num, $airline_name) {
+      $query = sprintf("UPDATE flight SET num_tickets = num_tickets - 1 WHERE flight_num = '%s' AND airline_name = '%s' AND num_tickets > 0",
+        mysqli_real_escape_string($this->link, $flight_num),
+        mysqli_real_escape_string($this->link, $airline_name));
+
+      $result = mysqli_query($this->link, $query);
+      if (!$result || mysqli_num_rows($result) === 0) {
+        error_log('"' . $query. '"' . " failed to execute or affected 0 rows");
+        return false;
+      }
+      return true;
+    }
+
+    function increaseAvailableTickets($flight_num, $airline_name) {
+      $query = sprintf("UPDATE flight SET num_tickets = num_tickets + 1 WHERE flight_num = '%s' AND airline_name = '%s'",
+        mysqli_real_escape_string($this->link, $flight_num),
+        mysqli_real_escape_string($this->link, $airline_name));
+
+      $result = mysqli_query($this->link, $query);
+      if (!$result || mysqli_num_rows($result) === 0) {
+        error_log('"' . $query. '"' . " failed to execute or affected 0 rows");
+        return false;
+      }
+      return true;
+    }
+
+    function deleteTicketIfInvalid($ticket_id) {
+      $query = sprintf("DELETE FROM ticket WHERE ticket_id = '%s'",
+        mysqli_real_escape_string($this->link, $ticket_id));
+      $result = mysqli_query($this->link, $query);
+      if (mysqli_affected_rows($this->link) == 0) {
+        error_log('"' . $query. '"' . " failed to delete invalid ticket with ticket id: ".$ticket_id);
+        return false;
+      }
+      return true;
+    }
+
+    function purchaseTicketForFlight($flight_num, $airline_name, $customer_email) {
+      $no_error = $this->decreaseAvailableTickets($flight_num, $airline_name);
+      if(!$no_error) {
+        error_log("Couldn't decrement tickets. Possibly no more");
+        return false;
+      }
+
+      $digits = 9;
+      $ticket_id = rand(pow(10, $digits-1), pow(10, $digits)-1);
+      $query = sprintf("INSERT INTO ticket VALUES('%d', '%s', '%s')",
+        mysqli_real_escape_string($this->link, $ticket_id),
+        mysqli_real_escape_string($this->link, $airline_name),
+        mysqli_real_escape_string($this->link, $flight_num));
+      $result = mysqli_query($this->link, $query);
+      if (mysqli_affected_rows($this->link) == 0) {
+        error_log('"' . $query. '"' . " failed to insert new ticket with ticket id: ".$ticket_id);
+        return false;
+      }
+
+      $curr_datetime = new DateTime();
+
+      $query = sprintf("INSERT INTO purchases VALUES ('%d', '%s', '', '%s')",
+        mysqli_real_escape_string($this->link, $ticket_id),
+        mysqli_real_escape_string($this->link, $this->email),
+        mysqli_real_escape_string($this->link, $curr_datetime->format('Y-m-d H:i:s')));
+
+      $result = mysqli_query($this->link, $query);
+      if (mysqli_affected_rows($this->link) == 0) {
+        error_log('"' . $query. '"' . " failed to insert into purchases with ticket_id: ".$ticket_id." - ".$this->email);
+        $this->increaseAvailableTickets($flight_num, $airline_name);
+        $this->deleteTicketIfInvalid($ticket_id);
+        return false;
+      }
+      return true;
+    }
+
     function __destruct() {
       // Close DB connection
       mysqli_close($this->link);

@@ -55,18 +55,50 @@
       return $this->reconstructResults($result);
     }
 
+    function changeFlightStatus($flight_num, $airline_name, $new_status) {
+      $query = sprintf("UPDATE flight SET status = '%s' WHERE flight_num = '%s' AND airline_name = '%s'",
+        mysqli_real_escape_string($this->link, $new_status),
+        mysqli_real_escape_string($this->link, $flight_num),
+        mysqli_real_escape_string($this->link, $airline_name));
+
+      $result = mysqli_query($this->link, $query);
+      if (!$result || mysqli_num_rows($result) === 0) {
+        error_log('"' . $query. '"' . " failed to execute or affected 0 rows");
+        return false;
+      }
+      return true;
+    }
+
     function reconstructResults($result) {
       $allFlightInfo = array();
       $counter = 0;
       // Break datetime into date and time
       while($row = mysqli_fetch_assoc($result)) {
         $allFlightInfo[$counter] = $row;
-        $datetime = new DateTime($row['departure_time']);
-        $allFlightInfo[$counter]['departure_date'] = $datetime->format('m/d/Y');
-        $allFlightInfo[$counter]['departure_time'] = $datetime->format('h:s A');
-        $datetime = new DateTime($row['arrival_time']);
-        $allFlightInfo[$counter]['arrival_date'] = $datetime->format('m/d/Y');
-        $allFlightInfo[$counter]['arrival_time'] = $datetime->format('h:i A');
+        $dept_datetime = new DateTime($row['departure_time']);
+        $allFlightInfo[$counter]['departure_date'] = $dept_datetime->format('m/d/Y');
+        $allFlightInfo[$counter]['departure_time'] = $dept_datetime->format('h:s A');
+        $arr_datetime = new DateTime($row['arrival_time']);
+        $allFlightInfo[$counter]['arrival_date'] = $arr_datetime->format('m/d/Y');
+        $allFlightInfo[$counter]['arrival_time'] = $arr_datetime->format('h:i A');
+
+        // Update Flight status "realtime"
+        $no_error = true;
+        $curr_datetime = new DateTime();
+        if($curr_datetime->format('Y-m-d H:i:s') > $arr_datetime && strtoupper($row['status']) != "COMPLETED") {
+          $no_error = $this->changeFlightStatus($row['flight_num'], $row['airline_name'], "COMPLETED");
+          $allFlightInfo[$counter]['status'] = "COMPLETED";
+        } else if ($curr_datetime->format('Y-m-d H:i:s') < $dept_datetime && strtoupper($row['status']) != "UPCOMING") {
+          $no_error = $this->changeFlightStatus($row['flight_num'], $row['airline_name'], "UPCOMING");
+          $allFlightInfo[$counter]['status'] = "UPCOMING";
+        } else if(strtoupper($row['status']) != "DELAYED" || strtoupper($row['status']) != "IN-PROGRESS") {
+          $no_error = $this->changeFlightStatus($row['flight_num'], $row['airline_name'], "IN-PROGRESS");
+          $allFlightInfo[$counter]['status'] = "IN-PROGRESS";
+        }
+
+        if(!$no_error) {
+          return false;
+        }
         $counter += 1;
       }
       return $allFlightInfo;
@@ -79,7 +111,7 @@
       $base_query = "SELECT * FROM full_flights WHERE ";
       $append_and = false;
       if (!empty($flightnum)) {
-        $base_query .= "flight_num = ".$flightnum;
+        $base_query .= "flight_num LIKE '".$flightnum."%'";
         $append_and = true;
       }
       if (!empty($deptdate)) {
@@ -102,28 +134,28 @@
         if ($append_and) {
           $base_query .= "AND ";
         }
-        $base_query .= 'departure_city="'.$deptcity.'"';
+        $base_query .= 'departure_city LIKE "'.$deptcity.'%"';
         $append_and = true;
       }
       if (!empty($arrivalcity)) {
         if ($append_and) {
           $base_query .= "AND ";
         }
-        $base_query .= 'arrival_city="'.$arrivalcity.'"';
+        $base_query .= 'arrival_city LIKE "'.$arrivalcity.'%"';
         $append_and = true;
       }
       if (!empty($deptairport)) {
         if ($append_and) {
           $base_query .= "AND ";
         }
-        $base_query .= 'departure_airport="'.$deptairport.'"';
+        $base_query .= 'departure_airport LIKE "'.$deptairport.'%"';
         $append_and = true;
       }
       if (!empty($arrivalairport)) {
         if ($append_and) {
           $base_query .= "AND ";
         }
-        $base_query .= 'arrival_airport="'.$arrivalairport.'"';
+        $base_query .= 'arrival_airport LIKE "'.$arrivalairport.'%"';
         $append_and = true;
       }
 

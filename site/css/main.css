@@ -93,3 +93,19 @@ th, #flight-system td {
 #flight-system {
   border: 1px solid #eee;
 }
+.bordered-info {
+  border: 1px solid #eee;
+  display: inline-block;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  width: 180px;
+}
+.label-display {
+  padding-left: 8px;
+  padding-right: 8px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #eee;
+}
+.label-display {
+  width: 200px;
+}

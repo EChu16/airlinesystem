@@ -48,7 +48,7 @@
 <?php
   } else {
 ?>
-<div class="interface-position vertical-center">
+<div id="error_msg" class="interface-position vertical-center">
 Invalid user session. Try relogging.
 </div>
 <?php } ?>
