@@ -8,39 +8,39 @@
   <table class="airlineAgentInterface" border="0" cellpadding="0" cellspacing="0" width="700px" align="center">
     <tr>
       <td align="center">
-        View My Flights
+        <div id="submit-btn" class="btn btn-primary"> View My Flights </div>
       </td>
       <td align="center">
-        Create New Flights
-      </td>
-    </tr>
-    <tr>
-      <td align="center">
-        Change Status of Flights
-      </td>
-      <td align="center">
-        Add Airplane in the System
+        <div id="submit-btn" class="btn btn-primary"> Create New Flights </div>
       </td>
     </tr>
     <tr>
       <td align="center">
-        Add New Airport in the System
+        <div id="submit-btn" class="btn btn-primary"> Change Status of Flights </div>
       </td>
       <td align="center">
-        View All the Booking Agents
-      </td>
-    </tr>
-    <tr>
-      <td align="center">
-        View Frequent Customers
-      </td>
-      <td align="center">
-        View Reports
+        <div id="submit-btn" class="btn btn-primary"> Add Airplane in the System </div>
       </td>
     </tr>
     <tr>
       <td align="center">
-        Logout
+        <div id="submit-btn" class="btn btn-primary"> Add New Airport in the System </div>
+      </td>
+      <td align="center">
+        <div id="submit-btn" class="btn btn-primary"> View All the Booking Agents </div>
+      </td>
+    </tr>
+    <tr>
+      <td align="center">
+        <div id="submit-btn" class="btn btn-primary"> View Frequent Customers </div>
+      </td>
+      <td align="center">
+        <div id="submit-btn" class="btn btn-primary"> View Reports </div>
+      </td>
+    </tr>
+    <tr>
+      <td align="center">
+        <div id="submit-btn" class="btn btn-primary"> Logout </div>
       </td>
     </tr>
   </table>

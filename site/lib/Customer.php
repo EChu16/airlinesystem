@@ -57,7 +57,31 @@
       $this->first_name = $row['first_name'];
       $this->last_name = $row['last_name'];
     }
-        
+    function viewMyFlights() {
+    $query = sprintf("SELECT * FROM flight NATURAL JOIN airport NATURAL JOIN purchases")
+      if (!$result || mysqli_num_rows($result) === 0) {
+        error_log('"' . $query. '"' . " returned 0 rows/failed");
+        return false;
+      }
+      return $result
+    }
+    function purchaseTickets() {
+    $query = sprintf("SELECT * FROM ticket NATURAL JOIN flight")
+      if (!$result || mysqli_num_rows($result) === 0) {
+        error_log('"' . $query. '"' . " returned 0 rows/failed");
+        return false;
+      }
+      return $result
+    }
+
+    function searchFlights() {
+    $query = sprintf("SELECT * FROM flight NATURAL JOIN")
+      if (!$result || mysqli_num_rows($result) === 0) {
+        error_log('"' . $query. '"' . " returned 0 rows/failed");
+        return false;
+      }
+      return $result
+    }
     function __destruct() {
       // Close DB connection
       mysqli_close($this->link);

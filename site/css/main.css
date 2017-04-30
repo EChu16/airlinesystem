@@ -12,8 +12,14 @@ input {
   background-image: url('../images/sunset-bg.jpg');
   background-size: 100% 100%;
 }
+
+.beach-bg {
+  background-image: url('http://cdn.wonderfulengineering.com/wp-content/uploads/2016/01/beach-wallpaper-5.jpeg');
+  background-size: 100% 100%;
+  
+}
 .form-wrapper {
-  padding-top: 200px;
+  padding-top: 100px;
 }
 .login-form, .signup-form {
   width: 400px;
@@ -56,7 +62,7 @@ input {
   padding-left: 5px;
 }
 .interface-position {
-  margin-top: 100px;
+  margin-top: 50px;
 }
 .search-box-wrapper {
   margin-top: 100px;

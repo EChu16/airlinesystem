@@ -5,6 +5,7 @@
   <body id="page-top" onload="loadUserParam()">
     <?php if(isset($_SESSION)) { ?>
     <?php include('user-navbar.php'); ?>
+      <div class="full-height body-center beach-bg">
       <div class="full-height">
         <?php if($_REQUEST['type'] == "customer") {
           include('main/customer-home.php');

@@ -7,18 +7,26 @@
   <table class="customerInterface" border="0" cellpadding="0" cellspacing="0" width="700px" align="center">
     <tr>
       <td align="center">
-        View My Flights
+        <div id="submit-btn" class="btn btn-primary">
+          View My Flights
+          </div>
       </td>
       <td align="center">
-        Purchase Tickets
+        <div id="submit-btn" class="btn btn-primary">
+          Purchase Tickets
+          </div>
       </td>
     </tr>
     <tr>
       <td align="center">
-        Search For Flights
+        <div id="submit-btn" class="btn btn-primary">
+          Search For Flights
+          </div>
       </td>
       <td align="center">
-        Logout
+        <div id="submit-btn" class="btn btn-primary">
+          Logout
+          </div>
       </td>
     </tr>
   </table>
