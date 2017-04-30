@@ -9,7 +9,7 @@
   $username = (isset($_POST['username'])) ? $_POST['username'] : "";
   $email = (isset($_POST['email'])) ? $_POST['email'] : "";
   $booking_agent_id = (isset($_POST['ba_id'])) ? (int)$_POST['ba_id'] : "";
-  $password = (isset($_POST['password'])) ? ($_POST['password']) : "";
+  $password = (isset($_POST['password'])) ? md5(($_POST['password'])) : "";
   $firstname = (isset($_POST['firstname'])) ? $_POST['firstname'] : "";
   $lastname = (isset($_POST['lastname'])) ? $_POST['lastname'] : "";
   $buildingnum = (isset($_POST['buildingnum'])) ? $_POST['buildingnum'] : "";
@@ -45,7 +45,7 @@
         mysqli_real_escape_string($link, $email),
         mysqli_real_escape_string($link, $firstname),
         mysqli_real_escape_string($link, $lastname),
-        mysqli_real_escape_string($link, md5($password)),
+        mysqli_real_escape_string($link, $password),
         mysqli_real_escape_string($link, $buildingnum),
         mysqli_real_escape_string($link, $street),
         mysqli_real_escape_string($link, $city),
@@ -56,14 +56,14 @@
     } else if($type == "booking_agent") {
       $query = sprintf("INSERT INTO booking_agent VALUES ('%s', '%s', '%s', '%s', '%d')",
         mysqli_real_escape_string($link, $email),
-        mysqli_real_escape_string($link, md5($password)),
+        mysqli_real_escape_string($link, $password),
         mysqli_real_escape_string($link, $firstname),
         mysqli_real_escape_string($link, $lastname),
         mysqli_real_escape_string($link, $booking_agent_id));
     } else if($type == "airline_staff") {
       $query = sprintf("INSERT INTO airline_staff VALUES ('%s', '%s', '%s', '%s','$dob', '%s')",
         mysqli_real_escape_string($link, $username),
-        mysqli_real_escape_string($link, md5($password)),
+        mysqli_real_escape_string($link, $password),
         mysqli_real_escape_string($link, $firstname),
         mysqli_real_escape_string($link, $lastname),
         mysqli_real_escape_string($link, $airlinename));
@@ -79,9 +79,7 @@
       http_response_code(200);
       $data = array('status' => 200, 'message' => 'Successfully registered');
       echo json_encode($data);
-      $_SESSION['ACCOUNT_TYPE'] = $type;
-      $_SESSION['IDENTIFIER'] = ($type == "airline_staff") ? $username : $email;
-      $_SESSION['PASSWORD'] = md5($password);
+      $_SESSION['PASSWORD'] = $password;
     }
 
   } else if ($action == "login") {
@@ -115,11 +113,7 @@
     } else {
       http_response_code(200);
       echo 'Successfully logged in';
-      $_SESSION['ACCOUNT_TYPE'] = $type;
-      $_SESSION['IDENTIFIER'] = ($type == "airline_staff") ? $username : $email;
-      $_SESSION['PASSWORD'] = md5($password);
-      echo $_SESSION['ACCOUNT_TYPE'];
-      echo $_SESSION['IDENTIFIER'];
+      $_SESSION['PASSWORD'] = $password;
     }
   }
 

@@ -23,7 +23,7 @@
     // Declare a public constructor
     public function __construct($email, $password) {
       $this->email = $email;
-      $this->password = md5($password);
+      $this->password = $password;
 
       $this->link = mysqli_connect($this->servername, $this->db_username, $this->db_password, $this->db_name);
       // Check connection
@@ -37,7 +37,7 @@
         mysqli_real_escape_string($this->link, $this->password));
       $result = mysqli_query($this->link, $query);
       if (!$result || mysqli_num_rows($result) === 0) {
-        error_log("Invalid user credentials");
+        error_log('"' . $query. '"' . " returned 0 rows/failed");
         return false;
       }
 

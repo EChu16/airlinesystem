@@ -1,13 +1,13 @@
 <!-- Section Footer
 ================================================== -->
-<section class="bg-dark">
+<div class="vertical-center" style="background-color: #222">
   <div class="container">
     <div class="row">
       <div class="col-md-12 text-center">
-        <p>
+        <p style="margin: 10px 0 10px 0 !important; color: white">
           &copy; Erich Chu and Kenneth Chen Final DB Proj
         </p>
       </div>
     </div>
   </div>
-</section>
+</div>

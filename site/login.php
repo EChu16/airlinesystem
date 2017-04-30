@@ -42,11 +42,11 @@
     <?php include('footer.php'); ?>
     <script type="text/javascript">
       function changeForm() {
-        $account_type = $('input[name=account_type]:checked').val();
-        if($account_type == "customer" || $account_type == "booking_agent") {
+        var account_type = $('input[name=account_type]:checked').val();
+        if(account_type == "customer" || account_type == "booking_agent") {
           $('#user-field').hide();
           $('#email-field').show();
-        } else if($account_type == "airline_staff"){
+        } else if(account_type == "airline_staff"){
           $('#user-field').show();
           $('#email-field').hide();
         }
@@ -86,7 +86,14 @@
               url: url,
               data: $("#loginForm").serialize(),
             }).done(function(data, textStatus, xhr) {
-              window.location.replace("home.php");
+              var identifier = "";
+              var account_type = $('input[name=account_type]:checked').val();
+              if(account_type == "customer" || account_type == "booking_agent") {
+                identifier = $('input[name=email]').val();
+              } else if(account_type == "airline_staff"){
+                identifier = $('input[name=username]').val();
+              }
+              window.location.replace("home.php?identifier=" + identifier + "&type=" + account_type);
             }).fail(function(xhr, status, error) {
               $('#error-msg').html(xhr.responseText);
             });

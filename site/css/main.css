@@ -58,3 +58,32 @@ input {
 .interface-position {
   margin-top: 100px;
 }
+.search-box-wrapper {
+  margin-top: 100px;
+}
+.search-left-col {
+  width: 25%;
+  float:left;
+}
+.search-box {
+  border: 1px solid #eee;
+  text-align: center;
+}
+.interface-right-col {
+  width: 74%;
+  float:right;
+}
+.flight-interface {
+  margin-top: 100px;
+  text-align: center;
+  max-height: 500px;
+  width: 900px;
+  overflow-y: scroll;
+  overflow-x: scroll;
+}
+th, #flight-system td {
+  border: 1px solid grey;
+}
+#flight-system {
+  border: 1px solid #eee;
+}

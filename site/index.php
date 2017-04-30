@@ -1,10 +1,8 @@
-
 <!DOCTYPE html>
 <html lang="en">
   <?php include('header.php'); ?>
   <body id="page-top">
     <?php include('public-navbar.php'); ?>
-
     <!-- Section Intro Slider
     ================================================== -->
     <div id="carousel-example-generic" class="carousel intro slide">

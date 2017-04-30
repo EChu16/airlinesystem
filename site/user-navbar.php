@@ -10,7 +10,7 @@
     </div>
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <a href="index.php">
+      <a href="home.php">
         <div class="nav navbar-nav navbar-left" style="margin-top:13px;"> Blackberry Airlines</div>
       </a>
       <ul class="nav navbar-nav navbar-right">
@@ -18,13 +18,13 @@
         <a class="page-scroll" href="flights.php">Flights</a>
         </li>
         <li>
-        <a class="page-scroll" href="login.php">Book Flight</a>
+        <a class="page-scroll" href="">Book Flight</a>
         </li>
         <li>
         <a class="page-scroll" href="signup.php">Account</a>
         </li>
         <li>
-        <a id="logout" class="page-scroll" href="signup.php">Logout</a>
+        <a id="logout" class="page-scroll" href="login.php">Logout</a>
         </li>
       </ul>
     </div>

@@ -2,15 +2,15 @@
 <!DOCTYPE html>
 <html lang="en">
   <?php include('header.php'); ?>
-  <body id="page-top">
+  <body id="page-top" onload="loadUserParam()">
     <?php if(isset($_SESSION)) { ?>
     <?php include('user-navbar.php'); ?>
       <div class="full-height">
-        <?php if($_SESSION['ACCOUNT_TYPE'] == "customer") {
+        <?php if($_REQUEST['type'] == "customer") {
           include('main/customer-home.php');
-        } else if ($_SESSION['ACCOUNT_TYPE'] == "booking_agent") {
+        } else if ($_REQUEST['type'] == "booking_agent") {
           include('main/booking_agent-home.php');
-        } else if ($_SESSION['ACCOUNT_TYPE'] == "airline_staff") {
+        } else if ($_REQUEST['type'] == "airline_staff") {
           include('main/airline_staff-home.php');
         }
         ?>

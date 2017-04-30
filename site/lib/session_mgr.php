@@ -1,10 +1,9 @@
 <?php
-  session_start([
-    'cookie_lifetime' => 86400,
-  ]);
-
-  $_SESSION['IDENTIFIER'];
-  $_SESSION['ACCOUNT_TYPE'];
+  if(!isset($_SESSION)) {
+    session_start([
+      'cookie_lifetime' => 86400,
+      ]);
+  }
 
   //Retrieve IP Address
   if($_SERVER['REMOTE_ADDR'])

@@ -28,4 +28,33 @@
   <script src="js/jquery.easing.min.js"></script>
   <script src="js/wow.min.js"></script>
   <script src="js/common.js"></script>
+  <script src="js/jquery.mousewheel.js"></script>
+  <script type="text/javascript">
+    function getUrlParameter(sParam)
+    {
+      var sPageURL = window.location.search.substring(1);
+      var sURLVariables = sPageURL.split('&');
+      for (var i = 0; i < sURLVariables.length; i++) 
+      {
+          var sParameterName = sURLVariables[i].split('=');
+          if (sParameterName[0] == sParam) 
+          {
+              return sParameterName[1];
+          }
+      }
+    }
+
+    function loadUserParam() {
+      jQuery( document ).ready(function() {
+       // Handler for .ready() called.
+        $("a").attr("href", function(i, oldHref) {
+          if(oldHref != "login.php") {
+            if (oldHref.charAt(0) != '#') {
+              return oldHref + "?identifier="+getUrlParameter("identifier")+"&type="+getUrlParameter("type");
+            }
+          }
+        });
+      });
+    }
+  </script>
 </head>

@@ -58,7 +58,7 @@
               </div>
               <div id="passportexp-field" class="vertical-center field-padding">
                 <span class="label"> Passport Expiration: </span>
-                <span class="form-field"><input type="text" name="passportexp"/></span>
+                <span class="form-field"><input type="text" name="passportexp" placeholder="mm/dd/yyyy" /></span>
               </div>
               <div id="passport_country-field" class="vertical-center field-padding">
                 <span class="label"> Passport Country: </span>
@@ -66,7 +66,7 @@
               </div>
               <div id="dob-field" class="vertical-center field-padding">
                 <span class="label"> Date of Birth: </span>
-                <span class="form-field"><input type="text" name="dob"/></span>
+                <span class="form-field"><input type="text" name="dob" placeholder="mm/dd/yyyy" /></span>
               </div>
               <div id="airlinename-field" class="vertical-center field-padding">
                 <span class="label"> Airline Name: </span>
@@ -158,6 +158,12 @@
         var dateRegEx = /^(0[1-9]|1[012]|[1-9])[- /.](0[1-9]|[12][0-9]|3[01]|[1-9])[- /.](19|20)\d\d$/
         return (date.match(dateRegEx) !== null);
       }
+
+      function isNumber(value) {
+        return /^\d+$/.test(value);
+      }
+
+
       $('input[name=account_type]').change(function (){
         changeForm();
       });
@@ -281,7 +287,7 @@
         }
 
         //Validate phone number
-        if((5 > $('input[name=phonenum]').val().length || $('input[name=phonenum]').val().length > 11) && $('input[name=phonenum]').is(":visible")) {
+        if((5 > $('input[name=phonenum]').val().length || $('input[name=phonenum]').val().length > 11) && $('input[name=phonenum]').is(":visible") && isNumber($('input[name=phonenum]').val())) {
           $(error).html('Phone number must be 5-11 digits.');
           sendRequest = false;
         }
@@ -293,7 +299,14 @@
             url: url,
             data: $("#signupForm").serialize(),
           }).done(function(data) {
-            window.location.replace("home.php");
+            var identifier = "";
+            var account_type = $('input[name=account_type]:checked').val();
+            if(account_type == "customer" || account_type == "booking_agent") {
+              identifier = $('input[name=email]').val();
+            } else if(account_type == "airline_staff"){
+              identifier = $('input[name=username]').val();
+            }
+            window.location.replace("home.php?identifier=" + identifier + "&type=" + account_type);
           }).fail(function(xhr, status, error) {
             $('#error-msg').html(xhr.responseText);
           });
