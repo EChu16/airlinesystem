@@ -3,7 +3,12 @@
   $user = new Customer($_REQUEST['identifier'], $_SESSION['PASSWORD']);
   if ($user->is_valid_user) {
 ?>
-<div class="interface-position vertical-center">
+<div class="user-greet">
+  <?php 
+  echo 'Hello,';
+  echo '<div>'.$user->first_name.'</div>';
+  ?>
+  <div class="interface-position vertical-center">
   <table class="customerInterface" border="0" cellpadding="0" cellspacing="0" width="700px" align="center">
     <tr>
       <td align="center">

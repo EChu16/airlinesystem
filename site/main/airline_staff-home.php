@@ -3,43 +3,48 @@
   $user = new AirlineStaff($_REQUEST['identifier'], $_SESSION['PASSWORD']);
   if ($user->is_valid_user) {
 ?>
+<div class="user-greet-staff">
+  <?php 
+  echo 'Hello,';
+  echo '<div>'.$user->first_name.'</div>';
+  ?>
 <div class="interface-position vertical-center">
   <table class="airlineAgentInterface" border="0" cellpadding="0" cellspacing="0" width="700px" align="center">
     <tr>
       <td align="center">
-        <a href="my_flights.php"><div class="interface-btn btn btn-primary"> View My Flights </div></a>
+        <a href="my_flights.php"><div class="interface-btn-staff btn btn-primary"> View My Flights </div></a>
       </td>
       <td align="center">
-        <div class="interface-btn btn btn-primary"> Create New Flight </div>
-      </td>
-    </tr>
-    <tr>
-      <td align="center">
-        <div class="interface-btn btn btn-primary"> Change Status of Flights </div>
-      </td>
-      <td align="center">
-        <div class="interface-btn btn btn-primary"> Add New Airplane </div>
+        <div class="interface-btn-staff btn btn-primary"> Create New Flight </div>
       </td>
     </tr>
     <tr>
       <td align="center">
-        <div class="interface-btn btn btn-primary"> Add New Airport </div>
+        <div class="interface-btn-staff btn btn-primary"> Change Status of Flights </div>
       </td>
       <td align="center">
-        <div class="interface-btn btn btn-primary"> View All Booking Agents </div>
-      </td>
-    </tr>
-    <tr>
-      <td align="center">
-        <div  class="interface-btn btn btn-primary"> View Frequent Customers </div>
-      </td>
-      <td align="center">
-        <div class="interface-btn btn btn-primary"> View Reports </div>
+        <div class="interface-btn-staff btn btn-primary"> Add New Airplane </div>
       </td>
     </tr>
     <tr>
       <td align="center">
-        <div class="interface-btn btn btn-primary"> Logout </div>
+        <div class="interface-btn-staff btn btn-primary"> Add New Airport </div>
+      </td>
+      <td align="center">
+        <div class="interface-btn-staff btn btn-primary"> View All Booking Agents </div>
+      </td>
+    </tr>
+    <tr>
+      <td align="center">
+        <div  class="interface-btn-staff btn btn-primary"> View Frequent Customers </div>
+      </td>
+      <td align="center">
+        <div class="interface-btn-staff btn btn-primary"> View Reports </div>
+      </td>
+    </tr>
+    <tr>
+      <td align="center">
+        <div class="interface-btn-staff btn btn-primary"> Logout </div>
       </td>
     </tr>
   </table>
