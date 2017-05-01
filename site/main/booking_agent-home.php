@@ -1,6 +1,5 @@
 <?php 
   include('lib/session_mgr.php'); include('lib/BookingAgent.php');
-  error_log($_SESSION['PASSWORD']);
   $user = new BookingAgent($_REQUEST['identifier'], $_SESSION['PASSWORD']);
   if ($user->is_valid_user) {
 ?>

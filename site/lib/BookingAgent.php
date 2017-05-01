@@ -162,7 +162,6 @@
         return false;
       }
       $row = mysqli_fetch_assoc($result);
-      error_log($query);
       $commission_stats = array();
 
       if($row['total_price'] === NULL) {

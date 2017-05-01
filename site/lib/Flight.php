@@ -68,7 +68,11 @@
       $this->num_tickets = $row['num_tickets'];
       array_push($this->POSSIBLE_STATUSES, "DELAYED", "IN-PROGRESS", "UPCOMING", "COMPLETED");
     }
-        
+    
+    function getPossibleStatuses() {
+      return $this->POSSIBLE_STATUSES;
+    }
+
     function __destruct() {
       // Close DB connection
       mysqli_close($this->link);

@@ -105,7 +105,9 @@
                 <tr>
                   <?php if(isset($_SESSION['PASSWORD']) && $_REQUEST['type'] != "airline_staff") {
                     echo '<th class="body-center">View/Purchase Ticket</th><th class="body-center"># Tickets Bought</th>';
-                  } ?>
+                  } else {
+                    echo '<th class="body-center">View/Update Flight</th>';
+                  }?>
                   <th class="body-center">Airline</th>
                   <th class="body-center">Flight #</th>
                   <th class="body-center">Departure airport</th>
@@ -125,7 +127,9 @@
                 foreach($allFlights as $row) {
                   $view_link = "";
                   if(isset($_SESSION['PASSWORD']) && $_REQUEST['type'] != "airline_staff") {
-                    $view_link = "<td align='center'><a href='view_flight.php?flight_num=".$row['flight_num']."&airline_name=".$row['airline_name']."'>Flight Link</a></td>'<td align='center'>".$row['num_tickets_purchased']."</td>'.";
+                    $view_link = "<td align='center'><a href='view_flight.php?flight_num=".$row['flight_num']."&airline_name=".$row['airline_name']."'>Flight Link</a></td><td align='center'>".$row['num_tickets_purchased']."</td>";
+                  } else {
+                    $view_link = "<td align='center'><a href='view_flight.php?flight_num=".$row['flight_num']."&airline_name=".$row['airline_name']."'>Flight Link</a></td>";
                   }
                   echo '<tr>'.
                           $view_link.

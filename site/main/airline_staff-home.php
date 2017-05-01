@@ -15,36 +15,31 @@
         <a href="my_flights.php"><div class="interface-btn-staff btn btn-primary"> View My Flights </div></a>
       </td>
       <td align="center">
-        <div class="interface-btn-staff btn btn-primary"> Create New Flight </div>
+        <a href="new_flight.php"><div class="interface-btn-staff btn btn-primary"> Create New Flight </div></a>
       </td>
     </tr>
     <tr>
       <td align="center">
-        <div class="interface-btn-staff btn btn-primary"> Change Status of Flights </div>
+        <a href="new_airplane.php"><div class="interface-btn-staff btn btn-primary"> Add New Airplane </div></a>
       </td>
       <td align="center">
-        <div class="interface-btn-staff btn btn-primary"> Add New Airplane </div>
+        <a href="new_airport.php"><div class="interface-btn-staff btn btn-primary"> Add New Airport </div></a>
       </td>
     </tr>
     <tr>
       <td align="center">
-        <div class="interface-btn-staff btn btn-primary"> Add New Airport </div>
+        <a href=""><div class="interface-btn-staff btn btn-primary"> View All Booking Agents </div></a>
       </td>
       <td align="center">
-        <div class="interface-btn-staff btn btn-primary"> View All Booking Agents </div>
+        <a href=""><div  class="interface-btn-staff btn btn-primary"> View Frequent Customers </div></a>
       </td>
     </tr>
     <tr>
-      <td align="center">
-        <div  class="interface-btn-staff btn btn-primary"> View Frequent Customers </div>
-      </td>
       <td align="center">
         <div class="interface-btn-staff btn btn-primary"> View Reports </div>
       </td>
-    </tr>
-    <tr>
       <td align="center">
-        <div class="interface-btn-staff btn btn-primary"> Logout </div>
+        <a href="login.php"><div class="interface-btn-staff btn btn-primary"> Logout </div></a>
       </td>
     </tr>
   </table>

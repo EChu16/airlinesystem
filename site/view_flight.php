@@ -1,4 +1,4 @@
-<?php include('lib/session_mgr.php'); include('lib/Customer.php'); include('lib/BookingAgent.php'); include('lib/AirlineStaff.php'); include('lib/Flight.php');?>
+<?php include('lib/session_mgr.php'); include('lib/Customer.php'); include('lib/BookingAgent.php'); include('lib/AirlineStaff.php'); include('lib/Flight.php'); include('lib/DBHelper.php'); ?>
 <!DOCTYPE html>
 <html lang="en">
   <?php include('header.php'); ?>
@@ -11,6 +11,8 @@
           $user = new Customer($_REQUEST['identifier'], $_SESSION['PASSWORD']);
         } else if ($_REQUEST['type'] == "booking_agent") {
           $user = new BookingAgent($_REQUEST['identifier'], $_SESSION['PASSWORD']);
+        } else if($_REQUEST['type'] == "airline_staff") {
+          $user = new AirlineStaff($_REQUEST['identifier'], $_SESSION['PASSWORD']);
         }
         if ($user && $user->is_valid_user) {
           $flight = new Flight($_REQUEST['flight_num'], $_REQUEST['airline_name']);
@@ -124,6 +126,7 @@
                 </td>
               </tr>
             </table>
+            <?php if($_REQUEST['type'] == "booking_agent" || $_REQUEST['type'] == "customer") { ?>
             <div id="num-tickets-wrapper">
               <span> Number of tickets to purchase: </span>
               <select id="num-ticket-dropdown">
@@ -140,6 +143,28 @@
             <div id="submit-btn" class="btn btn-primary" style="padding: 10px 20px">
               Purchase ticket
             </div>
+            <?php } else {
+              $dbhelper = new DBHelper(); ?>
+              <div>
+                <span> New flight status: </span>
+                <select id="flight-status-dropdown">
+                <?php foreach ($flight->getPossibleStatuses() as $status) {
+                  $selected = "";
+                  if ($flight->status == $status) {
+                    $selected = "selected";
+                  }
+                  echo '<option value="'.$status.'" '.$selected.'>'.$status.'</option>';
+                } ?>
+                </select>
+                <div id="error-msg"></div>
+                <div id="change-status-btn" class="btn btn-primary" style="display:inline-block;padding: 10px 20px">
+                  Change Status
+                </div>
+                <a href="view_customers.php?flight_num=<?php echo $_REQUEST['flight_num'].'&airline_name='.$_REQUEST['airline_name']; ?>"><div id="view-customers-btn" class="btn btn-primary" style="display:inline-block;padding: 10px 20px">
+                  View Customers
+                </div></a>
+              </div>
+            <?php } ?>
           </div>
         <?php } else { ?>
         <div class="vertical-center full-height">Invalid flight number.</div>
@@ -183,11 +208,25 @@
               url: url,
               data: {flightnum: <?php echo '"'.$_REQUEST['flight_num'].'"'; ?>, airline_name: <?php echo '"'.$_REQUEST['airline_name'].'"'; ?>, numtickets: $('#num-ticket-dropdown').val(), customer_email: c_email, identifier: <?php echo '"'.$_REQUEST['identifier'].'"'; ?>, account_type: <?php echo '"'.$_REQUEST['type'].'"'; ?>},
             }).done(function(data, textStatus, xhr) {
-              window.location.replace("home.php?identifier=" + <?php echo '"'.$_REQUEST['identifier'].'"'; ?> + "&type=" + <?php echo '"'.$_REQUEST['type'].'"'; ?>);
+              window.location.replace("my_flights.php?identifier=" + <?php echo '"'.$_REQUEST['identifier'].'"'; ?> + "&type=" + <?php echo '"'.$_REQUEST['type'].'"'; ?>);
             }).fail(function(xhr, status, error) {
               $('#error-msg').html(xhr.responseText);
             });
           }
+        });
+
+        $('#change-status-btn').click(function () {
+          var url = "addtodb.php";
+          $.ajax({
+            type: "POST",
+            url: url,
+            data: {add_type: "update_flight", flightnum: <?php echo '"'.$_REQUEST['flight_num'].'"'; ?>, airline_name: <?php echo '"'.$_REQUEST['airline_name'].'"'; ?>, status: $('#flight-status-dropdown').val(), identifier: <?php echo '"'.$_REQUEST['identifier'].'"'; ?>, account_type: <?php echo '"'.$_REQUEST['type'].'"'; ?>},
+          }).done(function(data, textStatus, xhr) {
+            $('#success-msg').html(data);
+            $('.flight-status').html($('#flight-status-dropdown').val());
+          }).fail(function(xhr, status, error) {
+            $('#error-msg').html(xhr.responseText);
+          });
         });
       });
     </script>

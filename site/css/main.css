@@ -69,6 +69,9 @@ input {
 #error-msg {
   color: red;
 }
+#success-msg {
+  color: green;
+}
 .radio-padding {
   padding-left: 10px;
   padding-right: 10px;
@@ -126,17 +129,6 @@ th, #flight-system td {
   width: 200px;
 }
 .interface-btn {
-  margin-top: 175px;
-  margin-bottom: -50px;
-  width: 250px;
-  height: 60px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 12px;
-}
-
-.interface-btn-staff {
   margin-top: 50px;
   width: 250px;
   height: 60px;
@@ -146,7 +138,7 @@ th, #flight-system td {
   font-size: 12px;
 }
 
-.commission-wrapper {
+.main-wrapper {
   margin-top: 100px;
   color: navy;
   background-color: rgba(255,255,255,.8);
@@ -154,14 +146,17 @@ th, #flight-system td {
   height: 350px;
   border-radius: 5px;
 }
-.commission-title {
+.main-title {
   font-size: 20pt;
   margin-top: 10px;
 }
-#commission-header {
+#main-header {
   font-style: italic;
   padding-bottom: 20px;
 }
-.commission-label {
+.main-label {
   font-weight: bold;
+}
+.common-border {
+  border: 1px solid grey;
 }

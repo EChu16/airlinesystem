@@ -54,7 +54,85 @@
       $this->date_of_birth_formatted = $datetime->format('m/d/Y');
       $this->airline_name = $row['airline_name'];
     }
-        
+
+    function addAirplane($airline_name, $num_seats) {
+      $digits = 8;
+      $airplane_id = rand(pow(10, $digits-1), pow(10, $digits)-1);
+      $query = sprintf("INSERT INTO airplane VALUES('%s', '%d', '%d')",
+        mysqli_real_escape_string($this->link, $airline_name),
+        mysqli_real_escape_string($this->link, $airplane_id),
+        mysqli_real_escape_string($this->link, $num_seats));
+      $result = mysqli_query($this->link, $query);
+      if (mysqli_affected_rows($this->link) == 0) {
+        error_log('"' . $query. '"' . " failed to insert new airplane with airplane id: ".$airplane_id);
+        echo 'Unable to insert airplane, try again.';
+        return false;
+      }
+      error_log('Created new airplane with id: '.$airplane_id.' with seats: '.$num_seats);
+      echo 'Successfully created new airplane ['.$airplane_id.'] for '.$airline_name;
+    }
+
+    function addAirport($airport_name, $airport_city) {
+      $query = sprintf("INSERT INTO airport VALUES('%s', '%s')",
+        mysqli_real_escape_string($this->link, $airport_name),
+        mysqli_real_escape_string($this->link, $airport_city));
+      $result = mysqli_query($this->link, $query);
+      if (mysqli_affected_rows($this->link) == 0) {
+        http_response_code(500);
+        error_log('"' . $query. '"' . " failed to insert new airport with airport name: ".$airport_name);
+        echo 'Existing airport exists.';
+        return false;
+      }
+      http_response_code(200);
+      error_log('Created new airport with name: '.$airport_name.' for city: '.$airport_city);
+      echo 'Successfully created new airport ['.$airport_name.'] for '.$airport_city;
+    }
+
+    function addFlight($airline_name, $deptairport_name, $dept_date, $dept_time, $arrairport_name, $arr_date, $arr_time, $price, $status, $airplane_id, $num_tickets) {
+      $digits = 8;
+      $flight_num = rand(pow(10, $digits-1), pow(10, $digits)-1);
+      $dept_datetime = DateTime::createFromFormat('m/d/Y h:i:s', $dept_date.' '.$dept_time);
+      $dept_datetime_formatted = $dept_datetime->format('Y-m-d h:i:s');
+      $arr_datetime = DateTime::createFromFormat('m/d/Y h:i:s', $arr_date.' '.$arr_time);
+      $arr_datetime_formatted = $dept_datetime->format('Y-m-d h:i:s');
+
+      $query = sprintf("INSERT INTO flight VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')",
+        mysqli_real_escape_string($this->link, $airline_name),
+        mysqli_real_escape_string($this->link, $flight_num),
+        mysqli_real_escape_string($this->link, $deptairport_name),
+        mysqli_real_escape_string($this->link, $dept_datetime_formatted),
+        mysqli_real_escape_string($this->link, $arrairport_name),
+        mysqli_real_escape_string($this->link, $arr_datetime_formatted),
+        mysqli_real_escape_string($this->link, $price),
+        mysqli_real_escape_string($this->link, $status),
+        mysqli_real_escape_string($this->link, $airplane_id),
+        mysqli_real_escape_string($this->link, $num_tickets));
+      $result = mysqli_query($this->link, $query);
+      if (mysqli_affected_rows($this->link) == 0) {
+        error_log('"' . $query. '"' . " failed to insert new flight with flight num: ".$flight_num);
+        echo 'Unable to insert flight, try again.';
+        return false;
+      }
+      error_log('Created new flight with #: '.$flight_num.' for airline: '.$airline_name);
+      echo 'Successfully created new flight ['.$flight_num.'] for '.$airline_name;
+    }
+
+    function updateFlightStatus($flight_num, $status, $airline_name) {
+      $query = sprintf("UPDATE flight SET status = '%s' WHERE flight_num = '%s' AND airline_name = '%s'",
+        mysqli_real_escape_string($this->link, $status),
+        mysqli_real_escape_string($this->link, $flight_num),
+        mysqli_real_escape_string($this->link, $airline_name));
+
+      $result = mysqli_query($this->link, $query);
+      if (!$result || mysqli_num_rows($result) === 0) {
+        error_log('"' . $query. '"' . " failed to execute or affected 0 rows");
+        return false;
+      }
+      http_response_code(200);
+      error_log('Successfully updated flight ['.$flight_num.'] to '.$status);
+      echo 'Successfully updated flight ['.$flight_num.'] to '.$status;
+    }
+
     function __destruct() {
       // Close DB connection
       mysqli_close($this->link);

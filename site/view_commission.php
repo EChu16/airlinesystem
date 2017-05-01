@@ -13,23 +13,23 @@
             $commission_stats = $user->getCommissionResults();
         ?>
         <div id="commission-interface" class="interface-position vertical-center">
-          <div class="commission-wrapper">
-            <div class="commission-title">
+          <div class="main-wrapper">
+            <div class="main-title">
               Commission Statistics
             </div>
-            <div id="commission-header">
+            <div id="main-header">
               Past 30 Days
             </div>
-            <div class="commission-field">
-              <span class="commission-label">Earnings: $</span>
+            <div class="main-field">
+              <span class="main-label">Earnings: $</span>
               <span id="commission-earnings"><?php echo $commission_stats['earnings']; ?></span>
             </div>
-            <div class="commission-field">
-              <span class="commission-label"># Tickets Sold: </span>
+            <div class="main-field">
+              <span class="main-label"># Tickets Sold: </span>
               <span id="commission-tickets"><?php echo $commission_stats['total_tickets']; ?></span>
             </div>
-            <div class="commission-field">
-              <span class="commission-label">Avg $/Ticket: $</span>
+            <div class="main-field">
+              <span class="main-label">Avg $/Ticket: $</span>
               <span id="commission-avg"><?php echo $commission_stats['avg_earning_per_ticket']; ?></span>
             </div>
 
@@ -94,7 +94,7 @@
             }).done(function(data) {
               var fromdate = $('input[name=from-date]');
               var todate = $('input[name=to-date]');
-              $('#commission-header').html($(fromdate).val() + " - " + $(todate).val());
+              $('#main-header').html($(fromdate).val() + " - " + $(todate).val());
               $(fromdate).val("");
               $(todate).val("");
               $('#error-msg').html("");
