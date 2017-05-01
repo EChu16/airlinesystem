@@ -114,12 +114,14 @@
         mysqli_real_escape_string($this->link, $curr_datetime->format('Y-m-d H:i:s')));
 
       $result = mysqli_query($this->link, $query);
+      error_log($query);
       if (mysqli_affected_rows($this->link) == 0 || !$result) {
         error_log('"' . $query. '"' . " failed to insert into purchases with ticket_id: ".$ticket_id." - ".$this->email);
         $this->increaseAvailableTickets($flight_num, $airline_name);
         $this->deleteTicketIfInvalid($ticket_id);
         return false;
       }
+      error_log($this->booking_agent_id." successfully inserted ticket: ".$ticket_id." for customer_email: ".$customer_email.".");
       return true;
     }
 

@@ -70,6 +70,10 @@
       return $result;      
     }
 
+    function queryBookingAgentsTickets() {
+      $query = "SELECT * FROM booking_agent";
+    }
+
     function __destruct() {
       // Close DB connection
       mysqli_close($this->link);

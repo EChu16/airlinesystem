@@ -215,6 +215,8 @@
         $base_query .= ' ORDER BY departure_time';
       }
 
+      error_log($base_query);
+
       $result = mysqli_query($this->link, $base_query);
 
       if (!$result) {

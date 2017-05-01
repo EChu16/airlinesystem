@@ -2,13 +2,9 @@
   include('lib/session_mgr.php'); include('lib/AirlineStaff.php');
   $user = new AirlineStaff($_REQUEST['identifier'], $_SESSION['PASSWORD']);
   if ($user->is_valid_user) {
-?>
-<div class="user-greet-staff">
-  <?php 
-  echo 'Hello,';
-  echo '<div>'.$user->first_name.'</div>';
-  ?>
-<div class="interface-position vertical-center">
+?>  
+<div class="full-height interface-position">
+  <div style="padding-top: 80px; padding-bottom: 40px; font-weight: bold; font-size: 24px;color:white"> <?php echo 'Hello '.$user->first_name; ?></div>
   <table class="airlineAgentInterface" border="0" cellpadding="0" cellspacing="0" width="700px" align="center">
     <tr>
       <td align="center">
@@ -28,7 +24,7 @@
     </tr>
     <tr>
       <td align="center">
-        <a href=""><div class="interface-btn-staff btn btn-primary"> View All Booking Agents </div></a>
+        <a href="view_booking_agents.php"><div class="interface-btn-staff btn btn-primary"> View All Booking Agents </div></a>
       </td>
       <td align="center">
         <a href=""><div  class="interface-btn-staff btn btn-primary"> View Frequent Customers </div></a>
