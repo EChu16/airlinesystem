@@ -15,14 +15,13 @@
       </a>
       <ul class="nav navbar-nav navbar-right">
         <li>
-        <a class="page-scroll" href="flights.php">Flights</a>
+        <a class="page-scroll" href="my_flights.php">My Flights</a>
         </li>
+        <?php if($_REQUEST['type'] != "airline_staff") { ?>
         <li>
-        <a class="page-scroll" href="">Book Flight</a>
+        <a class="page-scroll" href="flights.php">Book Flight</a>
         </li>
-        <li>
-        <a class="page-scroll" href="signup.php">Account</a>
-        </li>
+        <?php } ?>
         <li>
         <a id="logout" class="page-scroll" href="login.php">Logout</a>
         </li>

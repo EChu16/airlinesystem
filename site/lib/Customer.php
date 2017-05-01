@@ -70,18 +70,7 @@
       $datetime = new DateTime($this->date_of_birth);
       $this->date_of_birth_formatted = $datetime->format('m/d/Y');
     }
-
-    function viewMyFlights() {
-      $query = sprintf("SELECT DISTINCT * FROM flight NATURAL JOIN ticket NATURAL JOIN purchases JOIN customer WHERE customer.email = purchases.customer_email AND customer.email='%s'",
-        mysqli_real_escape_string($this->link, $this->email));
-      $result = mysqli_query($this->link, $query);
-      if (!$result) {
-        error_log('"' . $query. '"' . " returned 0 rows/failed");
-        return false;
-      }
-      return $result;
-    }
-
+    
     function decreaseAvailableTickets($flight_num, $airline_name) {
       $query = sprintf("UPDATE flight SET num_tickets = num_tickets - 1 WHERE flight_num = '%s' AND airline_name = '%s' AND num_tickets > 0",
         mysqli_real_escape_string($this->link, $flight_num),

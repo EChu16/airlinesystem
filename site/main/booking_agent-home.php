@@ -8,23 +8,18 @@
   <table class="bookingAgentInterface" border="0" cellpadding="0" cellspacing="0" width="700px" align="center">
     <tr>
       <td align="center">
-        <div id="submit-btn" class="btn btn-primary"> View My Flights </div>
+        <a href="my_flights.php"><div class="interface-btn btn btn-primary"> View My Flights </div></a>
       </td>
       <td align="center">
-        <div id="submit-btn" class="btn btn-primary"> Purchase Tickets </div>
-      </td>
-    </tr>
-    <tr>
-      <td align="center">
-        <div id="submit-btn" class="btn btn-primary"> Search For Flights </div>
-      </td>
-      <td align="center">
-        <div id="submit-btn" class="btn btn-primary"> View My Commision </div>
+        <a href="flights.php"><div class="interface-btn btn btn-primary"> Search/Purchase Tickets </div></a>
       </td>
     </tr>
     <tr>
       <td align="center">
-        <div id="submit-btn" class="btn btn-primary"> Logout </div>
+        <a href="view_commission.php"><div class="interface-btn btn btn-primary"> View My Commission </div></a>
+      </td>
+      <td align="center">
+        <a href="login.php"><div class="interface-btn btn btn-primary"> Logout </div></a>
       </td>
     </tr>
   </table>

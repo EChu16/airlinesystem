@@ -7,15 +7,15 @@
   <table class="customerInterface" border="0" cellpadding="0" cellspacing="0" width="700px" align="center">
     <tr>
       <td align="center">
-        <a href="">
-          <div id="submit-btn" class="btn btn-primary">
+        <a href="my_flights.php">
+          <div class="interface-btn btn btn-primary">
           View My Flights
           </div>
         </a>
       </td>
       <td align="center">
-        <a href="">
-          <div id="submit-btn" class="btn btn-primary">
+        <a href="flights.php">
+          <div class="interface-btn btn btn-primary">
           Purchase Tickets
           </div>
         </a>
@@ -23,15 +23,15 @@
     </tr>
     <tr>
       <td align="center">
-        <a href="flights.php?action=user_search">
-          <div id="submit-btn" class="btn btn-primary">
+        <a href="flights.php">
+          <div class="interface-btn btn btn-primary">
           Search For Flights
           </div>
         </a>
       </td>
       <td align="center">
-        <a href="">
-          <div id="submit-btn" class="btn btn-primary">
+        <a href="login.php">
+          <div class="interface-btn btn btn-primary">
           Logout
           </div>
         </a>

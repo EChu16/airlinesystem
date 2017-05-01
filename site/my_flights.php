@@ -26,6 +26,14 @@
                 </div>
                 <table border="0" cellpadding="0" cellspacing="0" align="center">
                   <tr>
+                    <td>
+                      <input type="hidden" name="identifier" value=<?php echo '"'.$_REQUEST['identifier'].'"'; ?>>
+                    </td>
+                    <td>
+                      <input type="hidden" name="type" value=<?php echo '"'.$_REQUEST['type'].'"';?>>
+                    </td>
+                  </tr>
+                  <tr>
                     <td align="center">
                       Flight number: 
                     </td>
@@ -96,7 +104,7 @@
               <thead>
                 <tr>
                   <?php if(isset($_SESSION['PASSWORD']) && $_REQUEST['type'] != "airline_staff") {
-                    echo '<th class="body-center">View/Purchase Ticket</th>';
+                    echo '<th class="body-center">View/Purchase Ticket</th><th class="body-center"># Tickets Bought</th>';
                   } ?>
                   <th class="body-center">Airline</th>
                   <th class="body-center">Flight #</th>
@@ -113,11 +121,11 @@
                 </tr>
               </thead>
               <tbody>
-                <?php $allFlights = $system->getAllExistingFlights();
+                <?php $allFlights = $system->getUserFlights($_REQUEST['identifier'], $_REQUEST['type']);
                 foreach($allFlights as $row) {
                   $view_link = "";
                   if(isset($_SESSION['PASSWORD']) && $_REQUEST['type'] != "airline_staff") {
-                    $view_link = "<td align='center'><a href='view_flight.php?flight_num=".$row['flight_num']."&airline_name=".$row['airline_name']."'>Flight Link</a></td>";
+                    $view_link = "<td align='center'><a href='view_flight.php?flight_num=".$row['flight_num']."&airline_name=".$row['airline_name']."'>Flight Link</a></td>'<td align='center'>".$row['num_tickets_purchased']."</td>'.";
                   }
                   echo '<tr>'.
                           $view_link.

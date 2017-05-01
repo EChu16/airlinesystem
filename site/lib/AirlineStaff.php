@@ -15,6 +15,7 @@
     public $first_name = false;
     public $last_name = false;
     public $date_of_birth = false;
+    public $date_of_birth_formatted = false;
     public $airline_name = false;
     
     public function get($var) {
@@ -48,6 +49,10 @@
       $this->is_valid_user = true;
       $this->first_name = $row['first_name'];
       $this->last_name = $row['last_name'];
+      $this->date_of_birth = $row['date_of_birth'];
+      $datetime = new DateTime($this->date_of_birth);
+      $this->date_of_birth_formatted = $datetime->format('m/d/Y');
+      $this->airline_name = $row['airline_name'];
     }
         
     function __destruct() {

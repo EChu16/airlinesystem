@@ -123,14 +123,61 @@
       return true;
     }
 
-    function viewCommission() {
-      $query = sprintf("SELECT * FROM ticket NATURAL JOIN flight");
+    function getCommissionResults() {
+      $query = sprintf("SELECT sum(price) as total_price, count(*) AS 'total_num_tickets' FROM purchases NATURAL JOIN ticket NATURAL JOIN flight WHERE booking_agent_id = '%s' AND purchase_date > NOW() - INTERVAL 30 DAY",
+        mysqli_real_escape_string($this->link, $this->booking_agent_id));
+      $result = mysqli_query($this->link, $query);
       if (!$result || mysqli_num_rows($result) === 0) {
         error_log('"' . $query. '"' . " returned 0 rows/failed");
+        echo 'Internal Error: 500 Server failure';
         return false;
       }
-      return $result;
+      $row = mysqli_fetch_assoc($result);
+      $commission_stats = array();
+
+      if($row['total_price'] === NULL) {
+        $commission_stats['earnings'] = 0;
+        $commission_stats['total_tickets'] = 0;
+        $commission_stats['avg_earning_per_ticket'] = 0;
+        return $commission_stats;
+      }
+
+      $earnings = (float)$row['total_price'] * 0.1;
+      $commission_stats['earnings'] = round($earnings, 2);
+      $commission_stats['total_tickets'] = $row['total_num_tickets'];
+      $commission_stats['avg_earning_per_ticket'] = round($earnings / (float)$row['total_num_tickets'], 2);
+
+      return $commission_stats;
     }
+
+    function recalculateCommissionStats($fromdate, $todate) {
+      $fromdate_obj = date('Y-m-d',strtotime($fromdate));
+      $todate_obj = date('Y-m-d',strtotime($todate));
+      $query = sprintf('SELECT sum(price) as total_price, count(*) AS total_num_tickets FROM purchases NATURAL JOIN ticket NATURAL JOIN flight WHERE booking_agent_id = "%s" AND CAST("'.$fromdate_obj.'" AS DATE) < CAST(purchase_date AS DATE) AND CAST(purchase_date AS DATE) < CAST("'.$todate_obj.'" AS DATE)',
+        mysqli_real_escape_string($this->link, $this->booking_agent_id));
+      $result = mysqli_query($this->link, $query);
+      if (!$result || mysqli_num_rows($result) === 0) {
+        error_log('"' . $query. '"' . " returned 0 rows/failed");
+        echo 'Internal Error: 500 Server failure';
+        return false;
+      }
+      $row = mysqli_fetch_assoc($result);
+      error_log($query);
+      $commission_stats = array();
+
+      if($row['total_price'] === NULL) {
+        $commission_stats['earnings'] = 0;
+        $commission_stats['total_tickets'] = 0;
+        $commission_stats['avg_earning_per_ticket'] = 0;
+        return $commission_stats;
+      }
+      $earnings = (float)$row['total_price'] * 0.1;
+      $commission_stats['earnings'] = round($earnings, 2);
+      $commission_stats['total_tickets'] = $row['total_num_tickets'];
+      $commission_stats['avg_earning_per_ticket'] = round($earnings / (float)$row['total_num_tickets'], 2);
+      return $commission_stats;
+    }
+
     function __destruct() {
       // Close DB connection
       mysqli_close($this->link);

@@ -44,7 +44,7 @@
     }
 
     function getAllExistingFlights() {
-      $query = "SELECT * FROM full_flights";
+      $query = "SELECT * FROM full_flights ORDER BY departure_time";
       $result = mysqli_query($this->link, $query);
 
       if (!$result || mysqli_num_rows($result) === 0) {
@@ -85,10 +85,11 @@
         // Update Flight status "realtime"
         $no_error = true;
         $curr_datetime = new DateTime();
-        if($curr_datetime->format('Y-m-d H:i:s') > $arr_datetime && strtoupper($row['status']) != "COMPLETED") {
+
+        if($curr_datetime > $arr_datetime && strtoupper($row['status']) != "COMPLETED") {
           $no_error = $this->changeFlightStatus($row['flight_num'], $row['airline_name'], "COMPLETED");
           $allFlightInfo[$counter]['status'] = "COMPLETED";
-        } else if ($curr_datetime->format('Y-m-d H:i:s') < $dept_datetime && strtoupper($row['status']) != "UPCOMING") {
+        } else if ($curr_datetime < $dept_datetime && strtoupper($row['status']) != "UPCOMING") {
           $no_error = $this->changeFlightStatus($row['flight_num'], $row['airline_name'], "UPCOMING");
           $allFlightInfo[$counter]['status'] = "UPCOMING";
         } else if(strtoupper($row['status']) != "DELAYED" || strtoupper($row['status']) != "IN-PROGRESS") {
@@ -159,8 +160,9 @@
         $append_and = true;
       }
 
+      $base_query .= ' ORDER BY departure_time';
+
       $result = mysqli_query($this->link, $base_query);
-      error_log($base_query);
 
       if (!$result) {
         error_log('"' . $base_query. '"' . " failed");
@@ -168,6 +170,132 @@
       }
 
       return $this->reconstructResults($result);
+    }
+
+    function filteredSearchByUser($flightnum, $deptdate, $arrivaldate, $deptcity, $arrivalcity, $deptairport, $arrivalairport, $type_identifier, $identifier, $type) {
+      if(empty($flightnum) && empty($deptdate) && empty($arrivaldate) && empty($deptcity) && empty($arrivalcity) && empty($deptairport) && empty($arrivalairport)) {
+        return $this->getUserFlights($identifier, $type);
+      }
+
+      if($type == "customer") {
+        $base_query = "SELECT *, COUNT(flight_num) AS num_tickets_purchased FROM full_flights NATURAL JOIN ticket NATURAL JOIN purchases WHERE purchases.customer_email = '".$type_identifier."'";
+      } else if($type == "booking_agent") {
+        $base_query = "SELECT *, COUNT(flight_num) AS num_tickets_purchased FROM full_flights NATURAL JOIN ticket NATURAL JOIN purchases WHERE purchases.booking_agent_id = '".$type_identifier."'";
+      } else {
+        $base_query = "SELECT * FROM full_flights WHERE airline_name = '".$type_identifier."'";
+      }
+
+      if (!empty($flightnum)) {
+        $base_query .= " AND flight_num LIKE '".$flightnum."%'";
+      }
+      if (!empty($deptdate)) {
+        $deptdate_obj = date('Y-m-d',strtotime($deptdate));
+        $base_query .= ' AND CAST(departure_time AS DATE) = CAST("'.$deptdate_obj.'" AS DATE)';
+      }
+      if (!empty($arrivaldate)) {
+        $arrivaldate_obj = date('Y-m-d',strtotime($arrivaldate));
+        $base_query .= ' AND CAST(arrival_time AS DATE) = CAST("'.$arrivaldate_obj.'" AS DATE)';
+      }
+      if (!empty($deptcity)) {
+        $base_query .= ' AND departure_city LIKE "'.$deptcity.'%"';
+      }
+      if (!empty($arrivalcity)) {
+        $base_query .= ' AND arrival_city LIKE "'.$arrivalcity.'%"';
+      }
+      if (!empty($deptairport)) {
+        $base_query .= ' AND departure_airport LIKE "'.$deptairport.'%"';
+      }
+      if (!empty($arrivalairport)) {
+        $base_query .= ' AND arrival_airport LIKE "'.$arrivalairport.'%"';
+      }
+
+      if($type == "customer" || $type == "booking_agent") {
+        $base_query .= ' GROUP BY flight_num ORDER BY purchase_date DESC';
+      } else {
+        $base_query .= ' ORDER BY departure_time';
+      }
+
+      $result = mysqli_query($this->link, $base_query);
+
+      if (!$result) {
+        error_log('"' . $base_query. '"' . " failed");
+        return false;
+      }
+
+      return $this->reconstructResults($result);
+    }
+
+    function getDefaultCustomerFlights($identifier) {
+      $query = sprintf("SELECT *, COUNT(flight_num) AS num_tickets_purchased FROM full_flights NATURAL JOIN ticket NATURAL JOIN purchases WHERE purchases.customer_email = '%s' GROUP BY flight_num ORDER BY purchase_date DESC",
+        mysqli_real_escape_string($this->link, $identifier));
+
+      $result = mysqli_query($this->link, $query);
+
+      if (!$result || mysqli_num_rows($result) === 0) {
+        error_log('"' . $query. '"' . " returned 0 rows/failed");
+      }
+      return $this->reconstructResults($result);
+    }
+
+    function getDefaultBookingAgentFlights($identifier) {
+      $query = sprintf("SELECT *, COUNT(flight_num) AS num_tickets_purchased FROM full_flights NATURAL JOIN ticket NATURAL JOIN purchases WHERE purchases.booking_agent_id = '%s' AND departure_time > NOW() GROUP BY flight_num ORDER BY purchase_date DESC",
+        mysqli_real_escape_string($this->link, $identifier));
+
+      $result = mysqli_query($this->link, $query);
+
+      if (!$result || mysqli_num_rows($result) === 0) {
+        error_log('"' . $query. '"' . " returned 0 rows/failed");
+      }
+      return $this->reconstructResults($result);
+    }
+
+    function getDefaultAirlineStaffFlights($identifier) {
+      $query = sprintf("SELECT * FROM full_flights WHERE airline_name = '%s' AND departure_time < NOW() + INTERVAL 30 DAY ORDER BY departure_time",
+        mysqli_real_escape_string($this->link, $identifier));
+
+      $result = mysqli_query($this->link, $query);
+
+      if (!$result || mysqli_num_rows($result) === 0) {
+        error_log('"' . $query. '"' . " returned 0 rows/failed");
+      }
+      return $this->reconstructResults($result);
+    }
+
+    function getUserFlights($identifier, $type) {
+      if($type == "customer") {
+        if(!class_exists('Customer')) {
+          include('lib/Customer.php');
+        }
+        $user = new Customer($identifier, $_SESSION['PASSWORD']);
+      } else if($type == "booking_agent") {
+        if(!class_exists('BookingAgent')) {
+          include('lib/BookingAgent.php');
+        }
+        $user = new BookingAgent($identifier, $_SESSION['PASSWORD']);
+      } else if($type == "airline_staff") {
+        if(!class_exists('AirlineStaff')) {
+          include('lib/AirlineStaff.php');
+        }
+        $user = new AirlineStaff($identifier, $_SESSION['PASSWORD']);
+      } else {
+        http_response_code(500);
+        error_log("Invalid user");
+        echo("Invalid user. Try relogging");
+      }
+
+      if(!$user->is_valid_user) {
+        http_response_code(500);
+        error_log("Invalid user");
+        echo("Invalid user. Try relogging");
+      } else {
+        if($type == "customer") {
+          return $this->getDefaultCustomerFlights($user->email);
+        } else if($type == "booking_agent") {
+          return $this->getDefaultBookingAgentFlights($user->booking_agent_id);
+        } else {
+          return $this->getDefaultAirlineStaffFlights($user->airline_name);
+        }
+      }
     }
   }
 ?>
