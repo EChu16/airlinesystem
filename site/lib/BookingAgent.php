@@ -12,8 +12,6 @@
 
     public $email = false;
     public $password = false;
-    public $first_name = false;
-    public $last_name = false;
     public $booking_agent_id = false;
 
     public function get($var) {
@@ -44,35 +42,7 @@
       $row = mysqli_fetch_assoc($result);
 
       $this->is_valid_user = true;
-      $this->first_name = $row['first_name'];
-      $this->last_name = $row['last_name'];
       $this->booking_agent_id = $row['booking_agent_id'];
-    }
-
-    function decreaseAvailableTickets($flight_num, $airline_name) {
-      $query = sprintf("UPDATE flight SET num_tickets = num_tickets - 1 WHERE flight_num = '%s' AND airline_name = '%s' AND num_tickets > 0",
-        mysqli_real_escape_string($this->link, $flight_num),
-        mysqli_real_escape_string($this->link, $airline_name));
-
-      $result = mysqli_query($this->link, $query);
-      if (!$result || mysqli_num_rows($result) === 0) {
-        error_log('"' . $query. '"' . " failed to execute or affected 0 rows");
-        return false;
-      }
-      return true;
-    }
-
-    function increaseAvailableTickets($flight_num, $airline_name) {
-      $query = sprintf("UPDATE flight SET num_tickets = num_tickets + 1 WHERE flight_num = '%s' AND airline_name = '%s'",
-        mysqli_real_escape_string($this->link, $flight_num),
-        mysqli_real_escape_string($this->link, $airline_name));
-
-      $result = mysqli_query($this->link, $query);
-      if (!$result || mysqli_num_rows($result) === 0) {
-        error_log('"' . $query. '"' . " failed to execute or affected 0 rows");
-        return false;
-      }
-      return true;
     }
 
     function deleteTicketIfInvalid($ticket_id) {
@@ -87,12 +57,6 @@
     }
     
     function purchaseTicketForFlight($flight_num, $airline_name, $customer_email) {
-      $no_error = $this->decreaseAvailableTickets($flight_num, $airline_name);
-      if(!$no_error) {
-        error_log("Couldn't decrement tickets. Possibly no more");
-        return false;
-      }
-
       $digits = 8;
       $ticket_id = rand(pow(10, $digits-1), pow(10, $digits)-1);
       $query = sprintf("INSERT INTO ticket VALUES('%d', '%s', '%s')",
@@ -117,7 +81,6 @@
       error_log($query);
       if (mysqli_affected_rows($this->link) == 0 || !$result) {
         error_log('"' . $query. '"' . " failed to insert into purchases with ticket_id: ".$ticket_id." - ".$this->email);
-        $this->increaseAvailableTickets($flight_num, $airline_name);
         $this->deleteTicketIfInvalid($ticket_id);
         return false;
       }

@@ -41,10 +41,9 @@
     $query = "";
 
     if($type == "customer") {
-      $query = sprintf("INSERT INTO customer VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', %d, '%s', '$passportexp', '%s', '$dob')",
+      $query = sprintf("INSERT INTO customer VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', %d, '%s', '$passportexp', '%s', '$dob')",
         mysqli_real_escape_string($link, $email),
         mysqli_real_escape_string($link, $firstname),
-        mysqli_real_escape_string($link, $lastname),
         mysqli_real_escape_string($link, $password),
         mysqli_real_escape_string($link, $buildingnum),
         mysqli_real_escape_string($link, $street),
@@ -54,11 +53,9 @@
         mysqli_real_escape_string($link, $passportnum),
         mysqli_real_escape_string($link, $passport_country));
     } else if($type == "booking_agent") {
-      $query = sprintf("INSERT INTO booking_agent VALUES ('%s', '%s', '%s', '%s', '%d')",
+      $query = sprintf("INSERT INTO booking_agent VALUES ('%s', '%s', '%d')",
         mysqli_real_escape_string($link, $email),
         mysqli_real_escape_string($link, $password),
-        mysqli_real_escape_string($link, $firstname),
-        mysqli_real_escape_string($link, $lastname),
         mysqli_real_escape_string($link, $booking_agent_id));
     } else if($type == "airline_staff") {
       $query = sprintf("INSERT INTO airline_staff VALUES ('%s', '%s', '%s', '%s','$dob', '%s')",

@@ -96,7 +96,7 @@
       $arr_datetime = DateTime::createFromFormat('m/d/Y h:i:s', $arr_date.' '.$arr_time);
       $arr_datetime_formatted = $dept_datetime->format('Y-m-d h:i:s');
 
-      $query = sprintf("INSERT INTO flight VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')",
+      $query = sprintf("INSERT INTO flight VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')",
         mysqli_real_escape_string($this->link, $airline_name),
         mysqli_real_escape_string($this->link, $flight_num),
         mysqli_real_escape_string($this->link, $deptairport_name),
@@ -105,8 +105,7 @@
         mysqli_real_escape_string($this->link, $arr_datetime_formatted),
         mysqli_real_escape_string($this->link, $price),
         mysqli_real_escape_string($this->link, $status),
-        mysqli_real_escape_string($this->link, $airplane_id),
-        mysqli_real_escape_string($this->link, $num_tickets));
+        mysqli_real_escape_string($this->link, $airplane_id));
       $result = mysqli_query($this->link, $query);
       if (mysqli_affected_rows($this->link) == 0) {
         error_log('"' . $query. '"' . " failed to insert new flight with flight num: ".$flight_num);
@@ -131,6 +130,38 @@
       http_response_code(200);
       error_log('Successfully updated flight ['.$flight_num.'] to '.$status);
       echo 'Successfully updated flight ['.$flight_num.'] to '.$status;
+    }
+
+    function getTotalTickets() {
+      $query = sprintf("SELECT count(*) AS 'total_num_tickets' FROM purchases NATURAL JOIN ticket NATURAL JOIN flight WHERE airline_name = '%s' AND purchase_date > NOW() - INTERVAL 30 DAY",
+        mysqli_real_escape_string($this->link, $this->airline_name));
+      $result = mysqli_query($this->link, $query);
+      if (!$result || mysqli_num_rows($result) === 0) {
+        error_log('"' . $query. '"' . " returned 0 rows/failed");
+        echo 'Internal Error: 500 Server failure';
+        return false;
+      }
+      $row = mysqli_fetch_assoc($result);
+      $total_tickets = array();
+      $total_tickets['total_tickets'] = $row['total_num_tickets'];
+      return $total_tickets;
+    }
+
+    function recalculateTotalTickets($fromdate, $todate) {
+      $fromdate_obj = date('Y-m-d',strtotime($fromdate));
+      $todate_obj = date('Y-m-d',strtotime($todate));
+      $query = sprintf('SELECT count(*) AS total_num_tickets FROM purchases NATURAL JOIN ticket NATURAL JOIN flight WHERE airline_name = "%s" AND CAST("'.$fromdate_obj.'" AS DATE) < CAST(purchase_date AS DATE) AND CAST(purchase_date AS DATE) < CAST("'.$todate_obj.'" AS DATE)',
+        mysqli_real_escape_string($this->link, $this->airline_name));
+      $result = mysqli_query($this->link, $query);
+      if (!$result || mysqli_num_rows($result) === 0) {
+        error_log('"' . $query. '"' . " returned 0 rows/failed");
+        echo 'Internal Error: 500 Server failure';
+        return false;
+      }
+      $row = mysqli_fetch_assoc($result);
+      $total_tickets = array();
+      $total_tickets['total_tickets'] = $row['total_num_tickets'];
+      return $total_tickets;
     }
 
     function __destruct() {

@@ -1,3 +1,4 @@
+<?php include('lib/DBHelper.php'); $dbhelper = new DBHelper(); ?>
 <!DOCTYPE html>
 <html lang="en">
   <?php include('header.php'); ?>
@@ -70,7 +71,13 @@
               </div>
               <div id="airlinename-field" class="vertical-center field-padding">
                 <span class="label"> Airline Name: </span>
-                <span class="form-field"><input type="text" name="airlinename"/></span>
+                <select name="airlinename">
+                  <?php $result = $dbhelper->queryAllAirplanes(); 
+                  while($row = mysqli_fetch_assoc($result)) {
+                    echo '<option value="'.$row['airline_name'].'">'.$row['airline_name'].'</option>';
+                  }
+                  ?>
+                </select>
               </div>
               <div class="vertical-center field-padding">
                 <div class="radio-padding">
@@ -100,7 +107,7 @@
           $('#user-field').hide();
           $('#email-field').show();
           $('#firstname-field').show();
-          $('#lastname-field').show();
+          $('#lastname-field').hide();
           $('#password-field').show();
           $('#buildingnum-field').show();
           $('#street-field').show();
@@ -135,8 +142,8 @@
           $('#signup-form-wrapper').addClass("full-height");
           $('#user-field').hide();
           $('#email-field').show();
-          $('#firstname-field').show();
-          $('#lastname-field').show();
+          $('#firstname-field').hide();
+          $('#lastname-field').hide();
           $('#password-field').show();
           $('#buildingnum-field').hide();
           $('#street-field').hide();
@@ -178,12 +185,12 @@
 
         if($account_type == "customer" || $account_type == "booking_agent" || $account_type == "airline_staff") {
           var trimmed_fname = $.trim($('input[name=firstname]').val());
-          if(trimmed_fname == "") {
+          if(trimmed_fname == "" && $('input[name=firstname]').is(":visible")) {
             $(error).html('First name can\'t be blank.');
             sendRequest = false;
           }
           var trimmed_lname = $.trim($('input[name=lastname').val());
-          if(trimmed_lname == "") {
+          if(trimmed_lname == "" && $('input[name=lastname]').is(":visible")) {
             $(error).html('Last name can\'t be blank.');
           }
           var trimmed_pw = $.trim($('input[name=password]').val());

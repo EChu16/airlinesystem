@@ -21,11 +21,11 @@
               <input type="hidden" name="identifier" value=<?php echo '"'.$user->username.'"'?>>
               <input type="hidden" name="add_type" value="flight">
               <div class="main-field field-padding">
-                <span class="main-label">Airline name:</span>
-                <select name="airline_name">
-                  <?php $result = $dbhelper->queryAllAirlines(); 
+                <span class="main-label">Airline/Airplane ID: </span>
+                <select name="airline_airplane_id">
+                  <?php $result = $dbhelper->queryAllAirplanes(); 
                   while($row = mysqli_fetch_assoc($result)) {
-                    echo '<option value="'.$row['airline_name'].'">'.$row['airline_name'].'</option>';
+                    echo '<option value="'.$row['airline_name'].'/'.$row['airplane_id'].'">'.$row['airline_name'].'/'.$row['airplane_id'].'</option>';
                   }
                   ?>
                 </select>
@@ -79,20 +79,6 @@
                   }
                   ?>
                 </select>
-              </div>
-              <div class="main-field field-padding">
-                <span class="main-label">Airplane ID: </span>
-                <select name="airplane_id">
-                  <?php $result = $dbhelper->queryAllAirplanes(); 
-                  while($row = mysqli_fetch_assoc($result)) {
-                    echo '<option value="'.$row['airplane_id'].'">'.$row['airplane_id'].'</option>';
-                  }
-                  ?>
-                </select>
-              </div>
-              <div class="main-field field-padding">
-                <span class="main-label"># of Tickets: </span>
-                <input type="text" name="num_tickets">
               </div>
             </form>
             <div id="error-msg"></div>
@@ -158,10 +144,6 @@
           if(!isCurrency($('input[name=price]').val())) {
             can_add = false;
             $(error).html("Price must be a valid currency");
-          }
-          if($('input[name=num_tickets]').val().length > 4 || !isNumber($('input[name=num_tickets]').val())) {
-            can_add = false;
-            $(error).html("Tickets must be positive integer under 4 digits");
           }
           if(can_add) {
             var url = "addtodb.php";

@@ -27,12 +27,12 @@
         <a href="view_booking_agents.php"><div class="interface-btn-staff btn btn-primary"> View All Booking Agents </div></a>
       </td>
       <td align="center">
-        <a href=""><div  class="interface-btn-staff btn btn-primary"> View Frequent Customers </div></a>
+        <a href="view_freq_customer.php"><div  class="interface-btn-staff btn btn-primary"> View Frequent Customers </div></a>
       </td>
     </tr>
     <tr>
       <td align="center">
-        <div class="interface-btn-staff btn btn-primary"> View Reports </div>
+        <a href="reports.php"><div class="interface-btn-staff btn btn-primary"> View Reports </div></a>
       </td>
       <td align="center">
         <a href="login.php"><div class="interface-btn-staff btn btn-primary"> Logout </div></a>

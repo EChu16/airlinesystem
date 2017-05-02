@@ -6,6 +6,8 @@
   $db_name = 'airline_system';
 
   $identifier = (isset($_POST['identifier'])) ? $_POST['identifier'] : "";
+  
+  $airline_airplane_id = (isset($_POST['airline_airplane_id'])) ? $_POST['airline_airplane_id'] : "";
   $airline_name = (isset($_POST['airline_name'])) ? $_POST['airline_name'] : "";
   $airport_name = (isset($_POST['airport_name'])) ? $_POST['airport_name'] : "";
   $airport_city = (isset($_POST['airport_city'])) ? $_POST['airport_city'] : "";
@@ -35,6 +37,8 @@
     } else if($add_type == "airport") {
       $user->addAirport($airport_name, $airport_city);
     } else if($add_type == "flight") {
+      $airline_name = explode("/", $airline_airplane_id)[0];
+      $airplane_id = explode("/", $airline_airplane_id)[1];
       $user->addFlight($airline_name, $deptairport_name, $dept_date, $dept_time, $arrairport_name, $arr_date, $arr_time, $price, $status, $airplane_id, $num_tickets);
     } else if($add_type == "update_flight") {
       $user->updateFlightStatus($flight_num, $status, $airline_name);

@@ -6,21 +6,22 @@
     <?php if(isset($_SESSION)) { ?>
     <?php include('user-navbar.php'); ?>
       <div class="full-height body-center beach-bg">
-      <div>
         <?php if($_REQUEST['type'] == "airline_staff") { 
           $user = new AirlineStaff($_REQUEST['identifier'], $_SESSION['PASSWORD']);
           $dbhelper = new DBHelper();
           if($user->is_valid_user && $dbhelper->is_valid_conn) {
         ?>
         <div id="addplane-interface" class="interface-position vertical-center">
-          <div class="main-wrapper" style="width: 900px;height: 600px;margin-top: 30px !important">
+          <div class="main-wrapper" style="width: 900px;height: 450px;">
             <div class="main-title">
-              View all customers for flight 
+              View most frequent customers for <?php echo $user->airline_name; ?>
             </div>
             <div class="main-field field-padding">
               <div style="overflow-x: scroll;overflow-y: scroll;">
-                <table style="width: 1500px;max-height: 580px;" border="0" cellpadding="0" cellspacing="0" align="center">
+                <table style="width: 1500px;max-height: 430px;" border="0" cellpadding="0" cellspacing="0" align="center">
                   <thead>
+                    <th class="body-center">Customer Flights</th>
+                    <th class="body-center"># Tickets</th>
                     <th class="body-center">Email</th>
                     <th class="body-center">Name</th>
                     <th class="body-center">Building #</th>
@@ -34,9 +35,11 @@
                     <th class="body-center">Date of Birth</th>
                   </thead>
                   <tbody>
-                    <?php $result = $dbhelper->queryAllCustomersForFlight($_REQUEST['flight_num'], $_REQUEST['airline_name']); 
+                    <?php $result = $dbhelper->queryFreqCustomersForAirline($user->airline_name); 
                     while($row = mysqli_fetch_assoc($result)) {
                       echo '<tr>
+                              <td align="center" class="common-border"><a href="customer_flights.php?customer_identifier='.$row['email'].'">Link</a></td>
+                              <td align="center" class="common-border">'.$row['total_tickets'].'</td>
                               <td align="center" class="common-border">'.$row['email'].'</td>
                               <td align="center" class="common-border">'.$row['name'].'</td>
                               <td align="center" class="common-border">'.$row['building_number'].'</td>

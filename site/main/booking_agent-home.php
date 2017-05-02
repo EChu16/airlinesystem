@@ -4,7 +4,7 @@
   if ($user->is_valid_user) {
 ?>
 <div class="interface-position">
-  <div style="padding-top: 80px; padding-bottom: 40px; font-weight: bold; font-size: 24px;color:white"> <?php echo 'Hello '.$user->first_name; ?></div>
+  <div style="padding-top: 80px; padding-bottom: 40px; font-weight: bold; font-size: 24px;color:white"> <?php echo 'Hello #'.$user->booking_agent_id; ?></div>
   <table class="bookingAgentInterface" border="0" cellpadding="0" cellspacing="0" width="700px" align="center">
     <tr>
       <td align="center">

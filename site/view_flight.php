@@ -116,14 +116,6 @@
                     </span>
                   </div>
                 </td>
-                <td>
-                  <div class="bordered-info">
-                    <span class="label-display"># of Tickets Remaining</span><br><br>
-                    <span class="num-tickets value-padding">
-                      <?php echo $flight->num_tickets; ?>
-                    </span>
-                  </div>
-                </td>
               </tr>
             </table>
             <?php if($_REQUEST['type'] == "booking_agent" || $_REQUEST['type'] == "customer") { ?>
@@ -188,9 +180,6 @@
 
       $(document).ready(function () {
         $('#submit-btn').click(function () {
-          if($.trim($('.num-tickets').html()) == "0") {
-            $('#error-msg').html("Flight is currently unavailable - no tickets");
-          }
           var valid_email = true;
           var c_email = "";
           if($('input[name=customer_email]').is(":visible")) {

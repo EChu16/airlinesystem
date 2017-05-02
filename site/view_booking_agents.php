@@ -15,7 +15,7 @@
         <div id="addplane-interface" class="interface-position vertical-center">
           <div class="main-wrapper" style="width: 900px;height: 600px;margin-top: 30px !important">
             <div class="main-title">
-              Top 5 Booking Agents Ticket Sales
+              Top 5 Booking Agents Ticket Sales Past Year
             </div>
             <div class="main-field field-padding">
               <div style="width:850px;margin-left: 25px;">
@@ -23,19 +23,40 @@
                   <thead>
                     <th class="body-center">Tickets Sold</th>
                     <th class="body-center">Email</th>
-                    <th class="body-center">First name</th>
-                    <th class="body-center">Last name</th>
                     <th class="body-center">Booking Agent ID</th>
                   </thead>
                   <tbody>
-                    <?php $result = $dbhelper->queryBookingAgentsTickets($_REQUEST['flight_num'], $_REQUEST['airline_name']); 
+                    <?php $result = $dbhelper->queryBookingAgentStats($_REQUEST['flight_num'], $_REQUEST['airline_name']); 
                     while($row = mysqli_fetch_assoc($result)) {
                       echo '<tr>
+                              <td align="center" class="common-border">'.$row['total_tickets'].'</td>
                               <td align="center" class="common-border">'.$row['email'].'</td>
-                              <td align="center" class="common-border">'.$row['first_name'].'</td>
-                              <td align="center" class="common-border">'.$row['last_name'].'</td>
-                              <td align="center" class="common-border">'.$row['building_number'].'</td>
-                              <td align="center" class="common-border">'.$row['street'].'</td>
+                              <td align="center" class="common-border">'.$row['booking_agent_id'].'</td>
+                            </tr>';
+                    }
+                    ?>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="main-title">
+              Top 5 Booking Agents Ticket Sales Past Month
+            </div>
+            <div class="main-field field-padding">
+              <div style="width:850px;margin-left: 25px;">
+                <table style="width: 800px;max-height: 580px;" border="0" cellpadding="0" cellspacing="0" align="center">
+                  <thead>
+                    <th class="body-center">Tickets Sold</th>
+                    <th class="body-center">Email</th>
+                    <th class="body-center">Booking Agent ID</th>
+                  </thead>
+                  <tbody>
+                    <?php $result = $dbhelper->queryBookingAgentStatsMonth($_REQUEST['flight_num'], $_REQUEST['airline_name']); 
+                    while($row = mysqli_fetch_assoc($result)) {
+                      echo '<tr>
+                              <td align="center" class="common-border">'.$row['total_tickets'].'</td>
+                              <td align="center" class="common-border">'.$row['email'].'</td>
+                              <td align="center" class="common-border">'.$row['booking_agent_id'].'</td>
                             </tr>';
                     }
                     ?>
@@ -52,19 +73,15 @@
                   <thead>
                     <th class="body-center">Commission Earned</th>
                     <th class="body-center">Email</th>
-                    <th class="body-center">First name</th>
-                    <th class="body-center">Last name</th>
                     <th class="body-center">Booking Agent ID</th>
                   </thead>
                   <tbody>
-                    <?php $result = $dbhelper->queryAllCustomersForFlight($_REQUEST['flight_num'], $_REQUEST['airline_name']); 
+                    <?php $result = $dbhelper->queryBookingAgentStats($_REQUEST['flight_num'], $_REQUEST['airline_name']); 
                     while($row = mysqli_fetch_assoc($result)) {
                       echo '<tr>
+                              <td align="center" class="common-border">'.$row['commission_earnings'].'</td>
                               <td align="center" class="common-border">'.$row['email'].'</td>
-                              <td align="center" class="common-border">'.$row['first_name'].'</td>
-                              <td align="center" class="common-border">'.$row['last_name'].'</td>
-                              <td align="center" class="common-border">'.$row['building_number'].'</td>
-                              <td align="center" class="common-border">'.$row['street'].'</td>
+                              <td align="center" class="common-border">'.$row['booking_agent_id'].'</td>
                             </tr>';
                     }
                     ?>
