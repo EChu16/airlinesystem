@@ -93,7 +93,7 @@
     function queryFreqCustomersForAirline($airline_name) {
       $query = sprintf("SELECT * FROM customer JOIN (
                           SELECT DISTINCT customer_email,COUNT(*) as total_tickets FROM ticket NATURAL JOIN purchases NATURAL JOIN customer WHERE airline_name = '%s' AND purchase_date > DATE_SUB(CURRENT_DATE(), INTERVAL 1 YEAR) GROUP BY customer_email,email ORDER BY total_tickets
-                            ) AS ct GROUP BY customer_email ORDER BY total_tickets DESC",
+                            ) AS ct GROUP BY email ORDER BY total_tickets DESC",
         mysqli_real_escape_string($this->link, $airline_name));
 
       $result = mysqli_query($this->link, $query);

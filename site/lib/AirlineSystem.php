@@ -44,13 +44,14 @@
     }
 
     function getAllExistingFlights() {
-      $query = "SELECT * FROM full_flights ORDER BY departure_time";
+      $query = "SELECT * FROM full_flights WHERE departure_time > NOW() ORDER BY departure_time";
       $result = mysqli_query($this->link, $query);
 
       if (!$result || mysqli_num_rows($result) === 0) {
         error_log('"' . $query. '"' . " returned 0 rows/failed");
         return false;
       }
+      error_log($query);
 
       return $this->reconstructResults($result);
     }
@@ -109,10 +110,13 @@
       if(empty($flightnum) && empty($deptdate) && empty($arrivaldate) && empty($deptcity) && empty($arrivalcity) && empty($deptairport) && empty($arrivalairport)) {
         return $this->getAllExistingFlights();
       }
-      $base_query = "SELECT * FROM full_flights WHERE ";
-      $append_and = false;
+      $base_query = "SELECT * FROM full_flights WHERE departure_time > NOW()";
+      $append_and = true;
       if (!empty($flightnum)) {
-        $base_query .= "flight_num LIKE '".$flightnum."%'";
+        if ($append_and) {
+          $base_query .= "AND ";
+        }
+        $base_query .= " flight_num LIKE '".$flightnum."%'";
         $append_and = true;
       }
       if (!empty($deptdate)) {
@@ -161,6 +165,7 @@
       }
 
       $base_query .= ' ORDER BY departure_time';
+      error_log($base_query);
 
       $result = mysqli_query($this->link, $base_query);
 

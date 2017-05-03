@@ -150,7 +150,7 @@
     function recalculateTotalTickets($fromdate, $todate) {
       $fromdate_obj = date('Y-m-d',strtotime($fromdate));
       $todate_obj = date('Y-m-d',strtotime($todate));
-      $query = sprintf('SELECT count(*) AS total_num_tickets FROM purchases NATURAL JOIN ticket NATURAL JOIN flight WHERE airline_name = "%s" AND CAST("'.$fromdate_obj.'" AS DATE) < CAST(purchase_date AS DATE) AND CAST(purchase_date AS DATE) < CAST("'.$todate_obj.'" AS DATE)',
+      $query = sprintf('SELECT count(*) AS total_num_tickets FROM purchases NATURAL JOIN ticket NATURAL JOIN flight WHERE airline_name = "%s" AND CAST("'.$fromdate_obj.'" AS DATE) <= CAST(purchase_date AS DATE) AND CAST(purchase_date AS DATE) <= CAST("'.$todate_obj.'" AS DATE)',
         mysqli_real_escape_string($this->link, $this->airline_name));
       $result = mysqli_query($this->link, $query);
       if (!$result || mysqli_num_rows($result) === 0) {
@@ -159,6 +159,7 @@
         return false;
       }
       $row = mysqli_fetch_assoc($result);
+      error_log($query);
       $total_tickets = array();
       $total_tickets['total_tickets'] = $row['total_num_tickets'];
       return $total_tickets;

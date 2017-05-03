@@ -24,7 +24,6 @@ input {
 .login-form, .signup-form {
   width: 400px;
   display: inline-block;
-
 }
 .label {
   font-family: Calibri, Geneva, sans-serif;
@@ -42,7 +41,7 @@ input {
 .vertical-center {
   display: flex;
   align-items: center;
-  justify-content: center
+  justify-content: center;
 }
 
 .user-greet {

@@ -26,7 +26,7 @@
                     <th class="body-center">Booking Agent ID</th>
                   </thead>
                   <tbody>
-                    <?php $result = $dbhelper->queryBookingAgentStats($_REQUEST['flight_num'], $_REQUEST['airline_name']); 
+                    <?php $result = $dbhelper->queryBookingAgentStats(); 
                     while($row = mysqli_fetch_assoc($result)) {
                       echo '<tr>
                               <td align="center" class="common-border">'.$row['total_tickets'].'</td>
@@ -51,7 +51,7 @@
                     <th class="body-center">Booking Agent ID</th>
                   </thead>
                   <tbody>
-                    <?php $result = $dbhelper->queryBookingAgentStatsMonth($_REQUEST['flight_num'], $_REQUEST['airline_name']); 
+                    <?php $result = $dbhelper->queryBookingAgentStatsMonth(); 
                     while($row = mysqli_fetch_assoc($result)) {
                       echo '<tr>
                               <td align="center" class="common-border">'.$row['total_tickets'].'</td>
@@ -76,7 +76,7 @@
                     <th class="body-center">Booking Agent ID</th>
                   </thead>
                   <tbody>
-                    <?php $result = $dbhelper->queryBookingAgentStats($_REQUEST['flight_num'], $_REQUEST['airline_name']); 
+                    <?php $result = $dbhelper->queryBookingAgentStats(); 
                     while($row = mysqli_fetch_assoc($result)) {
                       echo '<tr>
                               <td align="center" class="common-border">'.$row['commission_earnings'].'</td>

@@ -4,7 +4,7 @@
   <?php include('header.php'); ?>
   <body id="page-top">
     <?php include('public-navbar.php'); ?>
-      <div id="signup-form-wrapper" class="body-center sunset-bg">
+      <div class="body-center sunset-bg">
         <div class="form-wrapper">
           <div class="signup-form">
             <form id="signupForm" action="" method="post">
@@ -103,7 +103,6 @@
       function changeForm() {
         $account_type = $('input[name=account_type]:checked').val();
         if($account_type == "customer") {
-          $('#signup-form-wrapper').removeClass("full-height");
           $('#user-field').hide();
           $('#email-field').show();
           $('#firstname-field').show();
@@ -121,7 +120,6 @@
           $('#airlinename-field').hide();
           $('#ba_id-field').hide();
         } else if($account_type == "airline_staff") {
-          $('#signup-form-wrapper').addClass("full-height");
           $('#user-field').show();
           $('#email-field').hide();
           $('#firstname-field').show();
@@ -139,7 +137,6 @@
           $('#airlinename-field').show();
           $('#ba_id-field').hide();
         } else if($account_type == "booking_agent") {
-          $('#signup-form-wrapper').addClass("full-height");
           $('#user-field').hide();
           $('#email-field').show();
           $('#firstname-field').hide();
